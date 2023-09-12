@@ -7,8 +7,8 @@
  *       boolean
  */
 
-import java
+ import java
 
-from EqualityTest eq
-where eq.getAnOperand() instanceof BooleanLiteral
-select eq
+ from EqualityTest eq
+ where eq.getAnOperand() instanceof BooleanLiteral
+ select eq
