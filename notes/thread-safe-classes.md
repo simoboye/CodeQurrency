@@ -1,7 +1,7 @@
 
 # Thread safe classes
 
-A **class** is said to be **thread-safe** if and only of no concurrent execution of method calls or field accesses (read/write) result in race conditions.
+A **class** is said to be **thread-safe** if and only if no concurrent execution of method calls or field accesses (read/write) result in race conditions.
 
 A concurrent **program** is said to be **thread-safe** if and only if it is race condition free.
 
