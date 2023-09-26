@@ -8,7 +8,7 @@ predicate isReferencedOutsideLock(FieldAccess fa, MethodAccess ma) {
   // limitation: this will not field accesses that is not thread safe if there is not a lock present
   // it does also not take into account unlock.
   // limitation: can not see if a method is syncronized
-  // limitation: 
+  // limitation: syncronized
   // isPrivate(f) and We think that we will report this twice if it is public
   ma.getMethod().hasName("lock")
   and not fa.getSite().toString() = "<obinit>"
