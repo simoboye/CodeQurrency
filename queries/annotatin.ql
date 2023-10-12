@@ -1,5 +1,5 @@
 import java
 
 from Class c
-where c.hasAnnotation()
+where c.getAnAnnotation().toString() = "ThreadSafe"
 select c, c.getAnAnnotation()
