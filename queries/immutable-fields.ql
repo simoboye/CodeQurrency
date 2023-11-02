@@ -1,9 +1,5 @@
 import java
-
-predicate isFieldInThreadSafeAnnotatedClass(Class c, Field f) {
-  c.getAnAnnotation().toString() = "ThreadSafe"
-  and c.declaresField(f.getName())
-}
+import annotation
 
 // TODO: Check this case
 // public class S {
@@ -21,25 +17,10 @@ predicate isFieldInThreadSafeAnnotatedClass(Class c, Field f) {
 predicate isImmutableField(Field f, Class c) {
   count(FieldWrite fw | fw.getField() = f | fw) -
   (count(FieldWrite fw | fw.getField() = f and fw.getEnclosingCallable().hasName(c.getName()) | fw) + 
-  count(FieldWrite fw | fw.getField() = f and fw.getEnclosingCallable().hasName("<obinit>") | fw))
-  = 0
-}
-
-predicate isNotSafelyPublished(Field f) {
-  not (f.isFinal() or isDefaultValue(f)) 
-}
-
-// What about other datatypes
-// https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html -- See default values
-// And what about arrays?
-predicate isDefaultValue(Field f) {
-  (f.getType().hasName("int") and f.getAnAssignedValue().toString() = "0")
-  or (f.getType().hasName("boolean") and f.getAnAssignedValue().toString() = "false")  
-  or f.getAnAssignedValue().toString() = "null"
+  count(FieldWrite fw | fw.getField() = f and fw.getEnclosingCallable().hasName("<obinit>") | fw)) = 0
 }
 
 from Field f, Class c
 where isFieldInThreadSafeAnnotatedClass(c, f)
 and isImmutableField(f, c)
-and isNotSafelyPublished(f)
 select f, f.getAnAssignedValue()
