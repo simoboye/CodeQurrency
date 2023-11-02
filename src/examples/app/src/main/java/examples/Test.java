@@ -2,6 +2,7 @@ package examples;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+@ThreadSafe
 public class Test {
   /**
    * Escaping field due to public visuability.
