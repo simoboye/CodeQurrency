@@ -1,7 +1,8 @@
 /**
- *
+ * @name escaping
  * @kind problem
- *
+ * @problem.severity warning
+ * @id java/escaping
  */
 
 import java

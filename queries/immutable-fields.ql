@@ -1,8 +1,10 @@
 /**
- *
+ * @name immutable-fields
  * @kind problem
- *
+ * @problem.severity warning
+ * @id java/immutable-fields
  */
+
 
 import java
 import annotation

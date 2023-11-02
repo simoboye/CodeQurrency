@@ -1,7 +1,8 @@
 /**
- *
+ * @name publishment
  * @kind problem
- *
+ * @problem.severity warning
+ * @id java/publishment
  */
 
 import java
