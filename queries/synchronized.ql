@@ -22,6 +22,6 @@ from Class c, Method m, Field f
 where 
   isMethodInThreadSafeAnnotatedClass(c, m)
   and not m.hasName("<obinit>")
-  and m.writes(f)
+  and m.accesses(f) //m.writes(f)
   and hasNoSyncronizedThis(m)
 select m, "Writes to a field. Consider it being in a syncronized block."
