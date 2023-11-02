@@ -17,7 +17,7 @@ Fix the issue with synchronization
 
 <example>
 <p>
-Here is an example of using the synchronized keyword
+Here is an example of using the synchronized keyword 
 </p>
 <sample src="examples/synchronized-example.java" />
 </example>
