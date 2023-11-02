@@ -1,3 +1,9 @@
+/**
+ *
+ * @kind problem
+ *
+ */
+
 import java
 import annotation
 
