@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Error with synchronized, something, something
+</p>
+</overview>
+
+<recommendation>
+<p>
+Fix the issue with synchronization
+</p>
+</recommendation>
+
+<example>
+<p>
+Here is an example of using the synchronized keyword
+</p>
+<sample src="examples/synchronized-example.java" />
+</example>
+
+
+<references>
+<li>
+Java Doc:
+<a href="https://docs.oracle.com/javase/tutorial/essential/concurrency/syncmeth.html">More about synchronized in JavaDoc</a>.
+</li>
+</references>
+</qhelp>
