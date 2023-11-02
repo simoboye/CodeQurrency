@@ -1,4 +1,20 @@
 import java
+import annotation
+import semmle.code.java.Concurrency
 
-from SynchronizedStmt st
-select st.getExpr()
+predicate hasNoSyncronizedThis(Callable ca) {
+  not ca.isSynchronized()
+  and
+  not exists(SynchronizedStmt s | ca.getBody().(SingletonBlock).getStmt() = s |
+    s.getExpr().(ThisAccess).getType() = ca.getDeclaringType()
+  )
+  // Maybe check that the syncronized statement starts before and ends after a the write.
+}
+
+from Class c, Method m, Field f
+where 
+  isMethodInThreadSafeAnnotatedClass(c, m)
+  and not m.hasName("<obinit>")
+  and m.writes(f)
+  and hasNoSyncronizedThis(m)
+select m, "Writes to a field. Consider it being in a syncronized block."

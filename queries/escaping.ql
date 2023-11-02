@@ -1,4 +1,5 @@
 import java
+import annotation
 
 predicate isPrivate(FieldAccess fa) {
   fa.getField().isPrivate()
@@ -19,11 +20,11 @@ predicate isReferencedOutsideLock(FieldAccess fa, MethodAccess ma) {
 }
 
 predicate isEscaping(FieldAccess fa, MethodAccess ma) {
-  not fa.getField().getLocation().toString().regexpMatch(".*modules.*")
-  and not isPrivate(fa)
+  not isPrivate(fa)
   and isReferencedOutsideLock(fa, ma)
 }
 
-from FieldWrite fa, MethodAccess ma //, FieldAccess fa
-where isEscaping(fa, ma)
+from FieldWrite fa, MethodAccess ma, Class c
+where isFieldInThreadSafeAnnotatedClass(c, fa.getField()) 
+  and isEscaping(fa, ma)
 select fa, "Potentially escaping field", fa.getLocation().getStartLine(), ma.getLocation(), fa.getSite(), ma.getEnclosingCallable()
