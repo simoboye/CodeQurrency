@@ -34,4 +34,6 @@ predicate isEscaping(FieldAccess fa, MethodAccess ma) {
 from FieldWrite fa, MethodAccess ma, Class c
 where isFieldInThreadSafeAnnotatedClass(c, fa.getField()) 
   and isEscaping(fa, ma)
-select fa, "Potentially escaping field", fa.getLocation().getStartLine(), ma.getLocation(), fa.getSite(), ma.getEnclosingCallable()
+select fa, "Potentially escaping field"
+
+//, fa.getLocation().getStartLine(), ma.getLocation(), fa.getSite(), ma.getEnclosingCallable()

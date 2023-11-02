@@ -31,4 +31,6 @@ predicate isImmutableField(Field f, Class c) {
 from Field f, Class c
 where isFieldInThreadSafeAnnotatedClass(c, f)
 and isImmutableField(f, c)
-select f, f.getAnAssignedValue()
+select f, "is immutable field"
+
+//, f.getAnAssignedValue()

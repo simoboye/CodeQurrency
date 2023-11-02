@@ -24,4 +24,6 @@ predicate isDefaultValue(Field f) {
 from Field f, Class c
 where isFieldInThreadSafeAnnotatedClass(c, f)
 and isNotSafelyPublished(f)
-select f, f.getAnAssignedValue()
+select f, "Is not safely published"
+
+//, f.getAnAssignedValue()
