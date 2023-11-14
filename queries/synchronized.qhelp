@@ -5,13 +5,14 @@
 
 <overview>
 <p>
-Error with synchronized, something, something
+Here, it is written to a mutable field, and it is not inside of a synchronized block.
+This can cause problems with synchronization.
 </p>
 </overview>
 
 <recommendation>
 <p>
-Fix the issue with synchronization
+Consider the field write to be inside of a synchronized block.
 </p>
 </recommendation>
 
@@ -19,7 +20,7 @@ Fix the issue with synchronization
 <p>
 Here is an example of using the synchronized keyword 
 </p>
-<sample src="examples/synchronized-example.java" />
+<sample src="examples/SynchronizedExample.java" />
 </example>
 
 
