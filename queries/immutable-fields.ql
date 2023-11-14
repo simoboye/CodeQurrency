@@ -33,4 +33,4 @@ from Field f, Class c
 where isFieldInThreadSafeAnnotatedClass(c, f)
 and isImmutableField(f, c)
 and locallySynchronizedOnThis(f.getAnAccess(), c) // Also finds objects that is syncronizing method calls.
-select f.getAnAccess(), "Is an immutable field, consider it not be accessed in a syncronized way"
+select f, "Is an immutable field, consider it not be accessed in a syncronized way"
