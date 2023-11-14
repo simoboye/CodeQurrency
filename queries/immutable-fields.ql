@@ -1,13 +1,14 @@
 /**
- * @name immutable-fields
+ * @name Immutable field
  * @kind problem
- * @problem.severity warning
+ * @problem.severity recommendation
  * @id java/immutable-fields
  */
 
 
 import java
 import annotation
+import semmle.code.java.Concurrency
 
 // TODO: Check this case
 // public class S {
@@ -31,6 +32,5 @@ predicate isImmutableField(Field f, Class c) {
 from Field f, Class c
 where isFieldInThreadSafeAnnotatedClass(c, f)
 and isImmutableField(f, c)
-select f, "is immutable field"
-
-//, f.getAnAssignedValue()
+and locallySynchronizedOnThis(f.getAnAccess(), c) // Also finds objects that is syncronizing method calls.
+select f, "Is an immutable field, consider it not be accessed in a syncronized way"

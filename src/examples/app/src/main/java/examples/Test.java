@@ -10,6 +10,7 @@ public class Test {
   int publicField;
   
   private int y;
+  final int immutableField = 1;
 
   // As of the below examples with syncronized as well. Except the incorretly placed lock.
 
@@ -59,5 +60,13 @@ public class Test {
     this.y = y;
     lock.lock();
     lock.unlock();
+  }
+
+  public synchronized int getImmutableField() {
+    return immutableField;
+  }
+
+  public synchronized int getImmutableField2() {
+    return immutableField;
   }
 }
