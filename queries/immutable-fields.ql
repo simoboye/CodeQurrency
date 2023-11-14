@@ -8,6 +8,7 @@
 
 import java
 import annotation
+import semmle.code.java.Concurrency
 
 // TODO: Check this case
 // public class S {
@@ -31,6 +32,5 @@ predicate isImmutableField(Field f, Class c) {
 from Field f, Class c
 where isFieldInThreadSafeAnnotatedClass(c, f)
 and isImmutableField(f, c)
-select f, "is immutable field"
-
-//, f.getAnAssignedValue()
+and locallySynchronizedOnThis(f.getAnAccess(), c)
+select f, "is immutable field, and should not be accessed in a syncronized way"
