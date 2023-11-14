@@ -10,8 +10,8 @@ import java.util.ListIterator;
 @ThreadSafe
 class SynchronizedList<E> extends SynchronizedCollection<E> implements List<E> {
         
-  @java.io.Serial
-  private static final long serialVersionUID = -7754090372962971524L;
+  // @java.io.Serial
+  // private static final long serialVersionUID = -7754090372962971524L;
 
   @SuppressWarnings("serial") // Conditionally serializable
   final List<E> list;

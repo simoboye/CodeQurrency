@@ -17,8 +17,8 @@ import java.util.stream.Stream;
  */
 @ThreadSafe
 class SynchronizedCollection<E> implements Collection<E>, Serializable {
-  @java.io.Serial
-  private static final long serialVersionUID = 3053995032091335093L;
+  // @java.io.Serial
+  // private static final long serialVersionUID = 3053995032091335093L;
 
   @SuppressWarnings("serial") // Conditionally serializable
   final Collection<E> c; // Backing Collection
@@ -153,7 +153,7 @@ class SynchronizedCollection<E> implements Collection<E>, Serializable {
     return c.parallelStream(); // Must be manually synched by user!
   }
 
-  @java.io.Serial
+  // @java.io.Serial
   private void writeObject(ObjectOutputStream s) throws IOException {
     synchronized (this) {
       s.defaultWriteObject();
