@@ -1,7 +1,7 @@
 /**
- * @name immutable-fields
+ * @name Immutable field
  * @kind problem
- * @problem.severity warning
+ * @problem.severity recommendation
  * @id java/immutable-fields
  */
 
@@ -32,5 +32,5 @@ predicate isImmutableField(Field f, Class c) {
 from Field f, Class c
 where isFieldInThreadSafeAnnotatedClass(c, f)
 and isImmutableField(f, c)
-and locallySynchronizedOnThis(f.getAnAccess(), c)
-select f, "is immutable field, and should not be accessed in a syncronized way"
+and locallySynchronizedOnThis(f.getAnAccess(), c) // Also finds objects that is syncronizing method calls.
+select f.getAnAccess(), "Is an immutable field, consider it not be accessed in a syncronized way"

@@ -1,7 +1,7 @@
 /**
  * @name synchronized
  * @kind problem
- * @problem.severity critical
+ * @problem.severity error
  * @id java/synchronized
  */
 

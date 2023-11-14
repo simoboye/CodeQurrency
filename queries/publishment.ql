@@ -1,7 +1,7 @@
 /**
  * @name publishment
  * @kind problem
- * @problem.severity warning
+ * @problem.severity error
  * @id java/publishment
  */
 
@@ -25,5 +25,3 @@ from Field f, Class c
 where isFieldInThreadSafeAnnotatedClass(c, f)
 and isNotSafelyPublished(f)
 select f, "Is not safely published"
-
-//, f.getAnAssignedValue()
