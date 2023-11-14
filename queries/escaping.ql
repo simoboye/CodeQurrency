@@ -1,7 +1,7 @@
 /**
  * @name Escaping
  * @kind problem
- * @problem.severity error
+ * @problem.severity warning
  * @id java/escaping
  */
 
