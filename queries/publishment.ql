@@ -1,5 +1,5 @@
 /**
- * @name publishment
+ * @name Publishment
  * @kind problem
  * @problem.severity error
  * @id java/publishment

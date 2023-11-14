@@ -25,7 +25,7 @@ public class Semaphore {
 
   public void release() {
     synchronized (this) {
-      state--;
+      state--; // State can become negative
       this.notifyAll();
     }
   }
