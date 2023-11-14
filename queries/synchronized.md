@@ -1,9 +1,9 @@
-# synchronized
-Error with synchronized, something, something
+# Synchronized
+Here, it is written to a mutable field, and it is not inside of a synchronized block. This can cause problems with synchronization.
 
 
 ## Recommendation
-Fix the issue with synchronization
+Consider the field write to be inside of a synchronized block.
 
 
 ## Example
@@ -13,15 +13,20 @@ Here is an example of using the synchronized keyword
 ```java
 package queries.examples;
 
-public class synchronized-example {
-    ..
+public class SynchronizedExample {
+    private int mutableField;
 
-    public synchronized void setYAgainInCorrect(int y) {
-        ...
+    public synchronized void increaseMutableField() {
+        mutableField = mutableField + 1;
+    }
+    
+    public synchronized int getAndIncreaseMutableField() {
+        mutableField = mutableField + 1;
+        return mutableField;
     }
 }
 
 ```
 
 ## References
-* Java Doc: [More about synchronized in JavaDoc](https://docs.oracle.com/javase/tutorial/essential/concurrency/syncmeth.html).  
+* Java Doc: [More about synchronized in JavaDoc](https://docs.oracle.com/javase/tutorial/essential/concurrency/syncmeth.html).
