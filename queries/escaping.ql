@@ -15,4 +15,5 @@ predicate isNotPrivate(Field f) {
 from Field f, Class c
 where isFieldInThreadSafeAnnotatedClass(c, f) 
   and isNotPrivate(f)
+  and not f.isFinal()
 select f, "Potentially escaping field"
