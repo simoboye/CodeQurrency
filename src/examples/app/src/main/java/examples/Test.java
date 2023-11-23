@@ -69,4 +69,8 @@ public class Test {
   public synchronized int getImmutableField2() {
     return immutableField;
   }
+
+  public void testMethod() {
+    this.y = y + 2;
+  }
 }
