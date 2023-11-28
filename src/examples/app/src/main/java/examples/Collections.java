@@ -77,7 +77,7 @@ import org.checkerframework.checker.units.qual.K;
 
 import com.google.common.collect.Comparators;
 
-// import jdk.internal.access.SharedSecrets;
+import jdk.internal.access.SharedSecrets;
 
 /**
  * This class consists exclusively of static methods that operate on or return
