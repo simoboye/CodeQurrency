@@ -12,7 +12,7 @@ public class Test {
   private int y;
   final int immutableField = 1;
 
-  // As of the below examples with syncronized as well. Except the incorretly placed lock.
+  // As of the below examples with synchronized as well. Except the incorretly placed lock.
 
   private Lock lock = new ReentrantLock();
 
