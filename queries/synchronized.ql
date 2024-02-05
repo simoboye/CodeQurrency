@@ -9,20 +9,29 @@ import java
 import annotation
 import semmle.code.java.Concurrency
 
-predicate hasNoSynchronizedThis(Callable ca) {
+predicate fieldAccessNotInsideStmt(Stmt s, FieldAccess fa) {
+  not (s.getLocation().getStartLine() < fa.getLocation().getStartLine() and
+      s.getLocation().getEndLine() > fa.getLocation().getStartLine())  
+  and 
+  not (s.getLocation().getStartColumn() < fa.getLocation().getStartColumn() and
+      s.getLocation().getEndColumn() > fa.getLocation().getStartColumn()) 
+}
+
+predicate hasNoSynchronizedThis(Callable ca, FieldAccess fa) {
   not ca.isSynchronized()
   and
   // Method calls should be like a write -> this is the case in synchronized query. 
-  not exists(SynchronizedStmt s | ca.getBody().(SingletonBlock).getStmt() = s | // Only finds methods that has a synchronized block in the beginning.
-    s.getExpr().(ThisAccess).getType() = ca.getDeclaringType()
+  (
+    not exists(SynchronizedStmt s | s.getEnclosingCallable() = ca | s.getExpr().(ThisAccess).getType() = ca.getDeclaringType())
+      or
+    exists(SynchronizedStmt s | s.getEnclosingCallable() = ca | fieldAccessNotInsideStmt(s.getBlock(), fa))
   )
-  // Maybe check that the synchronized statement starts before and ends after a the write.
 }
 
-from Class c, Method m, Field f
+from Class c, Method m, FieldAccess fa
 where 
   isElementInThreadSafeAnnotatedClass(c, m)
   and not m.hasName("<obinit>")
-  and m.accesses(f) // Could there be a bug where we assume that the field is a field of the same class as the method. But maybe the field could be a field belonging to another class than the method?
-  and hasNoSynchronizedThis(m)
+  and fa.getEnclosingCallable() = m
+  and hasNoSynchronizedThis(m, fa)
 select m, "Writes to a field. Consider it being in a synchronized block."
