@@ -87,4 +87,13 @@ public class LockExample {
     }
   }
 
+  public void synchronizedNonRelatedOutside2() {
+    int x = 0;
+    x++;
+
+    synchronized(this) {
+      length++;
+    }
+  }
+
 }
