@@ -79,6 +79,40 @@ public class LockExample {
     lock2.unlock();
   }
 
+  public void updateCountTwiceCorrect() {
+    lock2.lock();
+    notRelatedToOther++;
+    lock2.unlock();
+    lock1.lock();
+    notRelatedToOther++;
+    lock1.unlock();
+  }
+
+  public void updateCountTwiceDifferentLocks() {
+    lock2.lock();
+    notRelatedToOther++;
+    lock2.unlock();
+    lock1.lock();
+    notRelatedToOther++;
+    lock2.unlock();
+  }
+
+  public void updateCountTwiceLock() {
+    lock2.lock();
+    notRelatedToOther++;
+    lock2.unlock();
+    lock1.lock();
+    notRelatedToOther++;
+  }
+
+  public void updateCountTwiceUnLock() {
+    lock2.lock();
+    notRelatedToOther++;
+    lock2.unlock();
+    notRelatedToOther++;
+    lock1.unlock();
+  }
+
   public void synchronizedNonRelatedOutside() {
     notRelatedToOther++;
 
