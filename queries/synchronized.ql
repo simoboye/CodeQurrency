@@ -69,12 +69,17 @@ predicate checkLocks(FieldAccess fa) {
   hasUnlockButNoLock(fa)
 }
 
+predicate checkIfAllFieldsAreInLock(Callable c){
+  exists(FieldAccess fa | c.writes(fa.getField()) | not checkLocks(fa))
+}
+
 from Class c, Method m, FieldAccess fa
 where 
   isElementInThreadSafeAnnotatedClass(c, m)
   and not m.hasName("<obinit>")
   and fa.getEnclosingCallable() = m
   and not m.isPrivate() // Should we have this as a recursive problem or just report the private method?
-  and hasNoSynchronizedThis(m, fa)
-  and checkLocks(fa)
+  // and hasNoSynchronizedThis(m, fa)
+  // and checkLocks(fa)
+  and checkIfAllFieldsAreInLock(m)
 select m, "Writes to a field. Consider it being in a synchronized block."
