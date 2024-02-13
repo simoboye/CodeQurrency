@@ -9,12 +9,12 @@ import java
 import annotation
 import semmle.code.java.Concurrency
 
-predicate fieldAccessNotInsideStmt(Stmt s, FieldAccess fa) {
-  not (s.getLocation().getStartLine() < fa.getLocation().getStartLine() and
-      s.getLocation().getEndLine() > fa.getLocation().getStartLine())  
+predicate fieldAccessNotInsideStmt(Location stmtLocation, FieldAccess fa) {
+  not (stmtLocation.getStartLine() < fa.getLocation().getStartLine() and
+      stmtLocation.getEndLine() > fa.getLocation().getStartLine())  
     and 
-  not (s.getLocation().getStartColumn() < fa.getLocation().getStartColumn() and
-      s.getLocation().getEndColumn() > fa.getLocation().getStartColumn()) 
+  not (stmtLocation.getStartColumn() < fa.getLocation().getStartColumn() and
+    stmtLocation.getEndColumn() > fa.getLocation().getStartColumn()) 
 }
 
 predicate hasNoSynchronizedThis(Callable ca, FieldAccess fa) {
@@ -24,7 +24,7 @@ predicate hasNoSynchronizedThis(Callable ca, FieldAccess fa) {
   (
     not exists(SynchronizedStmt s | s.getEnclosingCallable() = ca | s.getExpr().(ThisAccess).getType() = ca.getDeclaringType())
       or
-    exists(SynchronizedStmt s | s.getEnclosingCallable() = ca | fieldAccessNotInsideStmt(s.getBlock(), fa))
+    exists(SynchronizedStmt s | s.getEnclosingCallable() = ca | fieldAccessNotInsideStmt(s.getBlock().getLocation(), fa))
   )
 }
 
@@ -50,7 +50,7 @@ predicate hasLockButNoUnlock(FieldAccess fa){
   exists(
     MethodAccess ma | 
     ma.getMethod().hasName("lock") and ma.getEnclosingCallable() = fa.getEnclosingCallable() |
-    not exists( MethodAccess ma2 | 
+    not exists(MethodAccess ma2 | 
             ma2.getMethod().hasName("unlock") and ma2.getEnclosingCallable() = fa.getEnclosingCallable() and
             ma.getQualifier().toString() = ma2.getQualifier().toString())
   )
@@ -67,10 +67,24 @@ predicate checkLocks(FieldAccess fa) {
   hasLockButNoUnlock(fa)
     or
   hasUnlockButNoLock(fa)
+    or
+  checkIfAllFieldsAreInLock(fa)
 }
 
-predicate checkIfAllFieldsAreInLock(Callable c){
-  exists(FieldAccess fa | c.writes(fa.getField()) | not checkLocks(fa))
+predicate checkIfAllFieldsAreInLock(FieldAccess fa){
+  exists(
+    MethodAccess ma | 
+    ma.getMethod().hasName("lock") and ma.getEnclosingCallable() = fa.getEnclosingCallable() |
+    ma.getLocation().getStartLine() > fa.getLocation().getStartLine()
+    // and (ma.getLocation().getStartColumn() > fa.getLocation().getStartColumn())
+  )
+  or 
+  exists(
+    MethodAccess ma | 
+    ma.getMethod().hasName("unlock") and ma.getEnclosingCallable() = fa.getEnclosingCallable() |
+    ma.getLocation().getEndLine() < fa.getLocation().getStartLine()
+    // and (ma.getLocation().getEndColumn() < fa.getLocation().getStartColumn())
+  )
 }
 
 from Class c, Method m, FieldAccess fa
@@ -79,7 +93,6 @@ where
   and not m.hasName("<obinit>")
   and fa.getEnclosingCallable() = m
   and not m.isPrivate() // Should we have this as a recursive problem or just report the private method?
-  // and hasNoSynchronizedThis(m, fa)
-  // and checkLocks(fa)
-  and checkIfAllFieldsAreInLock(m)
-select m, "Writes to a field. Consider it being in a synchronized block."
+  and hasNoSynchronizedThis(m, fa)
+  and checkLocks(fa)
+select m, c, "Writes to a field. Consider it being in a synchronized block."
