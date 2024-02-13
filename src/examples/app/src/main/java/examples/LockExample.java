@@ -38,7 +38,7 @@ public class LockExample {
     content[length] = 0;
   }
 
-  public void fielddUpdatedOutsideOfLock() { // adjusts length without lock
+  public void fieldUpdatedOutsideOfLock() { // adjusts length without lock
     length--;
 
     lock1.lock();
