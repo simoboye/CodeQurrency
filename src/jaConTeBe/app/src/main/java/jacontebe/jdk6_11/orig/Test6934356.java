@@ -43,6 +43,8 @@ import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.CyclicBarrier;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import edu.illinois.jacontebe.Helpers;
 import edu.illinois.jacontebe.OptionHelper;
 import edu.illinois.jacontebe.framework.Reporter;
@@ -60,6 +62,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * 
  * @collector Ziyi Lin
  */
+@ThreadSafe
 public class Test6934356 {
     
     public static void main(final String[] args) throws Exception {

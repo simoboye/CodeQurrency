@@ -5,6 +5,8 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import edu.illinois.jacontebe.framework.Reporter;
 
 /**
@@ -16,6 +18,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * @author Ziyi Lin
  * 
  */
+@ThreadSafe
 public class Test6436220 {
     private SelectionKey key;
     private volatile AtomicBoolean buggy;

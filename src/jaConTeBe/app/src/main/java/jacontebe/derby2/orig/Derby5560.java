@@ -5,6 +5,8 @@ import static org.mockito.Mockito.when;
 import java.sql.SQLException;
 import java.util.concurrent.CountDownLatch;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.apache.derby.client.ClientXAConnection40;
 import org.apache.derby.client.ConnectionSetter;
 import org.apache.derby.client.am.Agent;
@@ -27,7 +29,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * @author Ziyi Lin
  * 
  */
-
+@ThreadSafe
 public class Derby5560 {
 
     private class Thread1 extends Thread {

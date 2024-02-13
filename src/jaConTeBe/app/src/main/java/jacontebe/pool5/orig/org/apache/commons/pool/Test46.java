@@ -2,6 +2,8 @@ package org.apache.commons.pool;
 
 import java.util.concurrent.CountDownLatch;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import edu.illinois.jacontebe.Helpers;
 import edu.illinois.jacontebe.OptionHelper;
 import edu.illinois.jacontebe.framework.Reporter;
@@ -18,6 +20,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * @author Ziyi Lin
  * 
  */
+@ThreadSafe
 public class Test46 {
 
     private TestBaseObjectPool testBasePool;

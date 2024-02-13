@@ -14,6 +14,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 /**
  * Bug URL:http://jira.codehaus.org/browse/GROOVY-4736
  * This is a deadlock
@@ -27,6 +29,7 @@ import java.net.URL;
  * @author Szymon Kuklewicz
  * @collector Ziyi Lin
  */
+@ThreadSafe
 public class Groovy4736 {
 
     private static final int DEFAULT_THREAD_NUM = 3;

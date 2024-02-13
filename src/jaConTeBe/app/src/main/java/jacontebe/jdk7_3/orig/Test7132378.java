@@ -32,6 +32,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import edu.illinois.jacontebe.framework.Reporter;
 
 /**
@@ -57,6 +59,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * @collector Ziyi Lin
  *
  */
+@ThreadSafe
 public class Test7132378 {
     static volatile boolean buggy;
     

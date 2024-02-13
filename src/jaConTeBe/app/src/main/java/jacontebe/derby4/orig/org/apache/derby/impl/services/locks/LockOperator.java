@@ -1,8 +1,11 @@
 package org.apache.derby.impl.services.locks;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.apache.derby.iapi.error.StandardException;
 import org.apache.derby.iapi.services.locks.Lockable;
 
+@ThreadSafe
 public class LockOperator {
 
     private SinglePool factory;

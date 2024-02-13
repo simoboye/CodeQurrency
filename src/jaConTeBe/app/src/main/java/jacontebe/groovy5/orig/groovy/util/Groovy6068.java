@@ -2,6 +2,8 @@ package groovy.util;
 
 import java.io.InputStream;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.apache.tools.ant.Task;
 
 import edu.illinois.jacontebe.OptionHelper;
@@ -19,7 +21,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * @author Ziyi Lin
  *
  */
-
+@ThreadSafe
 public class Groovy6068 {
 
     private AntBuilder antBuilder;

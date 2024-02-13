@@ -52,10 +52,13 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Enumeration;
 import java.util.Properties;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 /**
  * Class of utility/library methods (i.e. procedures) that assist with the
  * writing and maintainance of rmi regression tests.
  */
+@ThreadSafe
 public class TestLibrary {
 
     /** standard test port number for registry */

@@ -6,6 +6,8 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import edu.illinois.jacontebe.framework.Reporter;
 
 /**
@@ -35,6 +37,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * @author Ziyi Lin
  *
  */
+@ThreadSafe
 public class Test4779253 {
 
     private Logger logger;

@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.apache.commons.dbcp.KeyGenerator;
 import org.apache.commons.dbcp.PoolingConnection;
 import org.apache.commons.pool.impl.GenericKeyedObjectPool;
@@ -26,6 +28,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * @author Ziyi Lin
  * 
  */
+@ThreadSafe
 public class Dbcp65 {
 
     private PoolingConnection poolingConnection;

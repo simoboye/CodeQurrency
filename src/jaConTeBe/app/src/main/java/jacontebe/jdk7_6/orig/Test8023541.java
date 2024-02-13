@@ -31,6 +31,8 @@ import java.rmi.activation.ActivationGroupDesc;
 import java.rmi.activation.ActivationGroupID;
 import java.rmi.activation.ActivationSystem;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import testUtils.ActivationLibrary;
 import testUtils.MyRMI;
 import testUtils.RMID;
@@ -64,6 +66,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * 
  * @collector Ziyi Lin
  */
+@ThreadSafe
 public class Test8023541 {
 
     private static MyRMI myRMI = null;

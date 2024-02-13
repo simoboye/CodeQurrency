@@ -22,6 +22,8 @@ package org.apache.log4j;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import edu.illinois.jacontebe.Helpers;
 import edu.illinois.jacontebe.OptionHelper;
 import edu.illinois.jacontebe.framework.Reporter;
@@ -34,6 +36,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * @author Louis Jacomet (axjuz)
  * @collector Ziyi Lin
  */
+@ThreadSafe
 public class Test50463 {
     private static int BUFFER_SIZE = 12;
     private Logger logger;

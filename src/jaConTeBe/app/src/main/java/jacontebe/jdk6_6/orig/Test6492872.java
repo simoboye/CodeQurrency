@@ -69,6 +69,7 @@ import java.io.FileInputStream;
 import java.nio.ByteBuffer;
 import java.security.KeyStore;
 
+import javax.annotation.concurrent.ThreadSafe;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
@@ -93,6 +94,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * @collector Ziyi Lin
  *
  */
+@ThreadSafe
 public class Test6492872 {
 
     /*

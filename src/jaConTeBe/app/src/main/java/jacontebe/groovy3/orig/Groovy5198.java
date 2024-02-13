@@ -8,6 +8,8 @@ import groovy.util.ScriptException;
 
 import java.io.IOException;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 /**
  * Bug URL: http://jira.codehaus.org/browse/GROOVY-5198
  * This is a race.
@@ -24,6 +26,7 @@ import java.io.IOException;
  * @author Ziyi Lin
  *
  */
+@ThreadSafe
 public class Groovy5198 {
 
     private static final int DEFAULT_THREAD_NUM = 2000;

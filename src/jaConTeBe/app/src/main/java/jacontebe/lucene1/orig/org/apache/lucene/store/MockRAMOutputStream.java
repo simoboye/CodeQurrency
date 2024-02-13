@@ -19,12 +19,14 @@ package org.apache.lucene.store;
 
 import java.io.IOException;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 /**
  * Used by MockRAMDirectory to create an output stream that will throw an
  * IOException on fake disk full, track max disk space actually used, and maybe
  * throw random IOExceptions.
  */
-
+@ThreadSafe
 public class MockRAMOutputStream extends RAMOutputStream {
     private MockRAMDirectory dir;
     private boolean first = true;

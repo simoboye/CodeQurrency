@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import edu.illinois.jacontebe.Helpers;
 import edu.illinois.jacontebe.OptionHelper;
 import edu.illinois.jacontebe.framework.Reporter;
@@ -21,7 +23,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * @collector Ziyi Lin
  * 
  */
-
+@ThreadSafe
 public class Derby4129 {
     private static final String URL = "jdbc:derby:DB";
 

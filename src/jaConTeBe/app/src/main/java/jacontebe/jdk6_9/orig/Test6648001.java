@@ -37,6 +37,8 @@ import java.net.URL;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import com.sun.net.httpserver.BasicAuthenticator;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpContext;
@@ -64,6 +66,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  *            
  * @collector Ziyi Lin
  */
+@ThreadSafe
 public class Test6648001 {
 
     public static void main(String[] args) throws Exception {

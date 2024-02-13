@@ -1,5 +1,7 @@
 package com.main;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
@@ -24,6 +26,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * @author Marcelo S. Miashiro (marc_sm2003@yahoo.com.br)
  * @collector Ziyi Lin
  */
+@ThreadSafe
 public class Test41214 {
 
     public static void main(String[] args) {

@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import edu.illinois.jacontebe.OptionHelper;
 import edu.illinois.jacontebe.framework.Reporter;
 
@@ -22,6 +24,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * @author Ziyi Lin
  * 
  */
+@ThreadSafe
 public class Dbcp369 {
 
     private volatile static boolean buggy = false;

@@ -42,6 +42,8 @@ import java.lang.annotation.Retention;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import edu.illinois.jacontebe.Helpers;
 import edu.illinois.jacontebe.OptionHelper;
 import edu.illinois.jacontebe.framework.Reporter;
@@ -59,6 +61,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * @collector Ziyi Lin
  *
  */
+@ThreadSafe
 public class Test7122142 {
 
     @Retention(RUNTIME)

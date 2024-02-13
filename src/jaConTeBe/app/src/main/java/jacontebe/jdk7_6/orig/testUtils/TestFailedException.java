@@ -1,5 +1,7 @@
 package testUtils;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 /*
  * Copyright (c) 1999, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -29,6 +31,7 @@ package testUtils;
  * Simple class to wrap test failure exceptions in a RuntimeException. Provides
  * a detail exception and a message.
  */
+@ThreadSafe
 public class TestFailedException extends java.lang.RuntimeException {
     public Throwable detail;
 

@@ -2,6 +2,8 @@ package org.apache.derby.impl.services.reflect;
 
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.apache.derby.iapi.error.StandardException;
 import org.apache.derby.iapi.services.locks.Lockable;
 import org.apache.derby.iapi.services.locks.ShExQual;
@@ -28,6 +30,7 @@ import edu.illinois.jacontebe.monitors.DeadlockMonitor;
  * 
  */
 
+@ThreadSafe
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ Monitor.class, IdUtil.class })
 public class Derby764 {

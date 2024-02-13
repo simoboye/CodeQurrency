@@ -6,6 +6,8 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Hashtable;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import edu.illinois.jacontebe.Helpers;
 import edu.illinois.jacontebe.OptionHelper;
 import edu.illinois.jacontebe.framework.Reporter;
@@ -23,6 +25,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * @collector Ziyi Lin
  * 
  */
+@ThreadSafe
 public class Test6927486 {
     public static void main(String args[]) {
         Reporter.reportStart("jdk6927486", 0, "deadlock");

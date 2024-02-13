@@ -4,6 +4,8 @@ import static org.mockito.Mockito.when;
 import java.sql.SQLException;
 import java.util.concurrent.CountDownLatch;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.apache.derby.client.ClientPooledConnection;
 import org.apache.derby.client.am.Connection;
 import org.apache.derby.client.am.LogicalConnection;
@@ -20,6 +22,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * @author Ziyi Lin
  * 
  */
+@ThreadSafe
 public class Derby5561 {
 
     private static class NativeRunnable implements Runnable {

@@ -1,5 +1,7 @@
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.apache.commons.pool.ObjectPool;
 import org.apache.commons.pool.PoolableObjectFactory;
 import org.apache.commons.pool.impl.GenericObjectPool;
@@ -20,6 +22,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * 
  * @collector Ziyi Lin
  */
+@ThreadSafe
 public class Test149 {
 
     public static int MAX_ACTIVE = 1;

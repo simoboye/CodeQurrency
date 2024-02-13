@@ -1,5 +1,7 @@
 package org.apache.lucene.util;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements. See the NOTICE file distributed with this
@@ -16,7 +18,7 @@ package org.apache.lucene.util;
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-
+@ThreadSafe
 public class English {
 
     public static String intToEnglish(int i) {

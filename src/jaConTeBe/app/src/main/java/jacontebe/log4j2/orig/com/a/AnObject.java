@@ -1,11 +1,14 @@
 package com.a;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.apache.log4j.Logger;
 
 /**
  * 
  * @author Marcelo S. Miashiro (marc_sm2003@yahoo.com.br)
  */
+@ThreadSafe
 public class AnObject {
     private static final Logger LOGGER = Logger.getLogger(AnObject.class);
     private final String name;

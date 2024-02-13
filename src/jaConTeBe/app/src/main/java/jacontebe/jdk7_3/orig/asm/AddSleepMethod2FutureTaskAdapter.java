@@ -1,10 +1,13 @@
 package asm;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.objectweb.asm.MethodVisitor;
 
 import edu.illinois.jacontebe.asm.AddSleepMethodAdapter;
 import edu.illinois.jacontebe.asm.CodeTemplate;
 
+@ThreadSafe
 public class AddSleepMethod2FutureTaskAdapter extends AddSleepMethodAdapter {
 
     private boolean flag;

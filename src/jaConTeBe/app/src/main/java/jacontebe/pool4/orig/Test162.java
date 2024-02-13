@@ -20,6 +20,8 @@
    
 
  */
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.apache.commons.pool.PoolableObjectFactory;
 import org.apache.commons.pool.impl.GenericObjectPool;
 
@@ -39,7 +41,9 @@ import edu.illinois.jacontebe.framework.Reporter;
  * @collector Ziyi Lin
  *
  */
+@ThreadSafe
 public class Test162 {
+    @ThreadSafe
     public class SimpleFactory implements PoolableObjectFactory {
 
         public SimpleFactory() {

@@ -1,7 +1,10 @@
 package asm;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.objectweb.asm.MethodVisitor;
 
+@ThreadSafe
 public class FutureTaskSleepFactory extends ActivationMVFactory {
 
     private long sleepTime;

@@ -1,6 +1,8 @@
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import edu.illinois.jacontebe.framework.Reporter;
 
 /**
@@ -10,7 +12,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * 
  * @collector Ziyi Lin
 **/
-
+@ThreadSafe
 public class Test4243978 {
 
     final static boolean debug = false;

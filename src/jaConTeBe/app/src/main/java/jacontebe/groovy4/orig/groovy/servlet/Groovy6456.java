@@ -21,6 +21,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpUpgradeHandler;
 import javax.servlet.http.Part;
 import javax.servlet.descriptor.*;
+import javax.annotation.concurrent.ThreadSafe;
 import javax.servlet.*;
 import javax.servlet.FilterRegistration.Dynamic;
 
@@ -62,6 +63,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * @author Ziyi Lin
  *
  */
+@ThreadSafe
 public class Groovy6456 {
 
     private GroovyServlet groovyServlet;

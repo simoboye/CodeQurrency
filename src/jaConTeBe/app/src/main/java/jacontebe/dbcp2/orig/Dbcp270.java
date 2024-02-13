@@ -3,6 +3,8 @@ import static org.mockito.Mockito.when;
 
 import java.sql.Connection;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.apache.commons.dbcp.ConnectionFactory;
 import org.apache.commons.dbcp.PoolableConnection;
 import org.apache.commons.dbcp.PoolableConnectionFactory;
@@ -26,6 +28,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * 
  * @author Ziyi Lin
  */
+@ThreadSafe
 public class Dbcp270 {
 
     private GenericObjectPool pool;

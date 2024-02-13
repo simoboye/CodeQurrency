@@ -1,11 +1,14 @@
 package com.b;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.apache.log4j.Logger;
 
 /**
  * 
  * @author Marcelo S. Miashiro (marc_sm2003@yahoo.com.br)
  */
+@ThreadSafe
 public class AnException extends RuntimeException {
     private static final Logger LOGGER = Logger.getLogger(AnException.class);
 

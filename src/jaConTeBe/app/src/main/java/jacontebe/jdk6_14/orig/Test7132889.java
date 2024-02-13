@@ -30,6 +30,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import edu.illinois.jacontebe.framework.Reporter;
 
 /**
@@ -44,6 +46,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * 
  * @collector Ziyi Lin
  */
+@ThreadSafe
 public class Test7132889 {
 
     public static void main(String[] args) throws Exception {

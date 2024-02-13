@@ -26,6 +26,8 @@ import java.util.Properties;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import edu.illinois.jacontebe.Helpers;
 import edu.illinois.jacontebe.OptionHelper;
 import edu.illinois.jacontebe.framework.Reporter;
@@ -43,6 +45,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * 
  * @collector Ziyi Lin
  */
+@ThreadSafe
 public class Test6977738 {
     CyclicBarrier go = new CyclicBarrier(2);
     CyclicBarrier done = new CyclicBarrier(2);

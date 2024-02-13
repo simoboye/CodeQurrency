@@ -35,9 +35,12 @@ import java.rmi.activation.ActivationID;
 import java.rmi.activation.ActivationSystem;
 import java.rmi.registry.LocateRegistry;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 /**
  * Class of test utility/library methods related to Activatable objects.
  */
+@ThreadSafe
 public class ActivationLibrary {
     /** time safeDestroy should wait before failing on shutdown rmid */
     private static final int SAFE_WAIT_TIME;

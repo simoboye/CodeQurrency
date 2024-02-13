@@ -21,6 +21,8 @@
 
  */
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.apache.commons.pool.ObjectPool;
 import org.apache.commons.pool.PoolableObjectFactory;
 import org.apache.commons.pool.impl.GenericObjectPool;
@@ -35,6 +37,7 @@ import edu.illinois.jacontebe.tools.InsideCaller;
  * 
  * @collector Ziyi Lin
  */
+@ThreadSafe
 public class Test120 {
     private volatile static boolean buggy = false;
 
@@ -169,6 +172,7 @@ public class Test120 {
         }
     }
 
+    @ThreadSafe
     public class SimpleFactory implements PoolableObjectFactory {
         public SimpleFactory() {
             this(true);

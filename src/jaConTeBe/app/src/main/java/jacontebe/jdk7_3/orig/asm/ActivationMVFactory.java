@@ -1,9 +1,12 @@
 package asm;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.objectweb.asm.MethodVisitor;
 
 import edu.illinois.jacontebe.asm.MvFactory;
 
+@ThreadSafe
 public class ActivationMVFactory implements MvFactory {
 
     @Override

@@ -20,6 +20,8 @@
    
 
  */
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.apache.commons.pool.KeyedObjectPool;
 import org.apache.commons.pool.KeyedPoolableObjectFactory;
 import org.apache.commons.pool.impl.GenericKeyedObjectPool;
@@ -38,6 +40,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * 
  * @collector Ziyi Lin
  */
+@ThreadSafe
 public class Test146 {
     public static void main(String[] args) throws Exception {
         int timeOut = 30;

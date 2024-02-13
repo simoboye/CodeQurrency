@@ -1,5 +1,7 @@
 package org.apache.log4j;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.apache.log4j.spi.LoggingEvent;
 
 import edu.illinois.jacontebe.Helpers;
@@ -17,6 +19,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * 
  * @author Ziyi Lin
  */
+@ThreadSafe
 public class Test38137 {
 
     private AsyncAppender asyncAppender;

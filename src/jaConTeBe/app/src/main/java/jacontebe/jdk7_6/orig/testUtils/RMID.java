@@ -33,12 +33,15 @@ import java.io.OutputStream;
 import java.rmi.Naming;
 import java.rmi.activation.ActivationSystem;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 /**
  * Utility class that creates an instance of rmid with a policy file of name
  * <code>TestParams.defaultPolicy</code>.
  *
  * Activation groups should run with the same security manager as the test.
  */
+@ThreadSafe
 public class RMID extends JavaVM {
 
     public static String MANAGER_OPTION = "-Djava.security.manager=";

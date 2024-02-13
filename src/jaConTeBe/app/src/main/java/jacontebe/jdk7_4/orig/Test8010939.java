@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import edu.illinois.jacontebe.Helpers;
 import edu.illinois.jacontebe.OptionHelper;
 import edu.illinois.jacontebe.framework.Reporter;
@@ -37,6 +39,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * @author jim.gish@oracle.com
  * @collector Ziyi Lin
  */
+@ThreadSafe
 public class Test8010939 {
     private LogManager mgr = LogManager.getLogManager();
     private final static int MAX_ITERATIONS = 5;

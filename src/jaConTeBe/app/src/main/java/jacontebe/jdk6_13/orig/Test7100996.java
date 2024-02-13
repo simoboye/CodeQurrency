@@ -1,3 +1,5 @@
+import javax.annotation.concurrent.ThreadSafe;
+
 import edu.illinois.jacontebe.framework.Reporter;
 
 /**
@@ -12,6 +14,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * @collector Ziyi Lin
  *
  */
+@ThreadSafe
 public class Test7100996 {
 
     private volatile boolean buggy = false;

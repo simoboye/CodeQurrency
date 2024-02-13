@@ -4,6 +4,8 @@ import static org.mockito.Mockito.mock;
 
 import java.util.concurrent.CountDownLatch;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.apache.derby.iapi.error.StandardException;
 import org.apache.derby.iapi.store.raw.ContainerKey;
 import org.apache.derby.iapi.store.raw.LockingPolicy;
@@ -25,6 +27,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * @author Ziyi Lin
  * 
  */
+@ThreadSafe
 public class Derby5447 {
     // This thread should be started later than another thread in order to
     // let two threads lock each other.

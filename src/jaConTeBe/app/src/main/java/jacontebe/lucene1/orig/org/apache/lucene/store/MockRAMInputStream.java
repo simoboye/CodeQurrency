@@ -2,6 +2,8 @@ package org.apache.lucene.store;
 
 import java.io.IOException;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -23,7 +25,7 @@ import java.io.IOException;
  * Used by MockRAMDirectory to create an input stream that keeps track of when
  * it's been closed.
  */
-
+@ThreadSafe
 public class MockRAMInputStream extends RAMInputStream {
     private MockRAMDirectory dir;
     private String name;

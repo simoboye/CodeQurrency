@@ -1,5 +1,7 @@
 package org.apache.log4j.helpers;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.apache.log4j.ConsoleAppender;
 
 import edu.illinois.jacontebe.framework.Reporter;
@@ -11,6 +13,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * 
  * @author Ziyi Lin
  */
+@ThreadSafe
 public class Test54325 {
 
     private AppenderAttachableImpl aai;

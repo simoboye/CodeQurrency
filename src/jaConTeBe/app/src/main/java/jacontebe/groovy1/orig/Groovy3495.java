@@ -2,6 +2,8 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.codehaus.groovy.tools.RootLoader;
 
 import edu.illinois.jacontebe.OptionHelper;
@@ -37,6 +39,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * @author Ziyi Lin
  * 
  */
+@ThreadSafe
 public class Groovy3495 {
 
     private RootLoader rootLoader;

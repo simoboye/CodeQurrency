@@ -1,5 +1,7 @@
 package org.apache.lucene;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -22,6 +24,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * @collector Ziyi Lin
  *
  */
+@ThreadSafe
 public class Test1544 extends LuceneTestCase240 {
 
     private String hotIndexPath;

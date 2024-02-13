@@ -1,5 +1,7 @@
 import java.io.File;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import edu.illinois.jacontebe.framework.Reporter;
 
 /**
@@ -9,6 +11,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * @collector Ziyi Lin
  *
  */
+@ThreadSafe
 public class Test4742723 {
     public static void main(String[] args) {
         Reporter.reportStart("jdk4742723", 0, "race");

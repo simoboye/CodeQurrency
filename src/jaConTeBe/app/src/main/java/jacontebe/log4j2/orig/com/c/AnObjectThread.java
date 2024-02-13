@@ -1,5 +1,7 @@
 package com.c;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.apache.log4j.Logger;
 
 import com.a.AnObject;
@@ -8,6 +10,7 @@ import com.a.AnObject;
  * 
  * @author Marcelo S. Miashiro (marc_sm2003@yahoo.com.br)
  */
+@ThreadSafe
 public class AnObjectThread extends Thread {
     private static final Logger LOGGER = Logger.getLogger(AnObjectThread.class);
 

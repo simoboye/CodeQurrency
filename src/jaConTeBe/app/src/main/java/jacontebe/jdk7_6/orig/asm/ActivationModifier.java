@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import asm.ActivationMVFactoryJdk7;
 import edu.illinois.jacontebe.OptionHelper;
 import edu.illinois.jacontebe.asm.Constants;
@@ -20,6 +22,7 @@ import edu.illinois.jacontebe.asm.ModifyDriver;
  * @author Ziyi Lin
  * 
  */
+@ThreadSafe
 public class ActivationModifier {
 
     public static void main(String[] args) throws IOException {

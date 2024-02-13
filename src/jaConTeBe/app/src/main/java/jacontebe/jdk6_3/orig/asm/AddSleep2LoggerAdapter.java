@@ -1,5 +1,7 @@
 package asm;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -7,6 +9,7 @@ import org.objectweb.asm.Opcodes;
 import edu.illinois.jacontebe.asm.AddSleepMethodAdapter;
 import edu.illinois.jacontebe.asm.CodeTemplate;
 
+@ThreadSafe
 public class AddSleep2LoggerAdapter extends AddSleepMethodAdapter implements
         Opcodes {
     private boolean insideMonitor;

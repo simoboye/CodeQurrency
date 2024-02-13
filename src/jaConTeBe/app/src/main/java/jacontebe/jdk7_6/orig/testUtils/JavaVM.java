@@ -32,6 +32,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.StringTokenizer;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 /**
  * RMI regression test utility class that uses Runtime.exec to spawn a java
  * process that will run a named java class.
@@ -41,6 +43,7 @@ import java.util.StringTokenizer;
  * 
  * @Modified by Ziyi Lin
  */
+@ThreadSafe
 public class JavaVM {
 
     // need to

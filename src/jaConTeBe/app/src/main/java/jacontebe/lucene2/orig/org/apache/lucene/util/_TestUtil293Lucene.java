@@ -23,12 +23,15 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Random;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.apache.lucene.index.CheckIndex;
 import org.apache.lucene.index.ConcurrentMergeScheduler;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.MergeScheduler;
 import org.apache.lucene.store.Directory;
 
+@ThreadSafe
 public class _TestUtil293Lucene {
 
     /**

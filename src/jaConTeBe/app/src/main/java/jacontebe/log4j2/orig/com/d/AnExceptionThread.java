@@ -1,5 +1,7 @@
 package com.d;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.apache.log4j.Logger;
 
 import com.b.AnException;
@@ -8,6 +10,7 @@ import com.b.AnException;
  * 
  * @author Marcelo S. Miashiro (marc_sm2003@yahoo.com.br)
  */
+@ThreadSafe
 public class AnExceptionThread extends Thread {
     private static final Logger LOGGER = Logger
             .getLogger(AnExceptionThread.class);

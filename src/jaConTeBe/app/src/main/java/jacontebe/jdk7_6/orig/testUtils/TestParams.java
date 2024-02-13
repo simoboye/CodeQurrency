@@ -28,9 +28,12 @@ package testUtils;
  */
 import java.io.File;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 /**
  * Setup static variables to represent properties in test environment.
  */
+@ThreadSafe
 public class TestParams {
 
     /** variables that hold value property values */

@@ -35,6 +35,8 @@ import java.util.MissingResourceException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import edu.illinois.jacontebe.OptionHelper;
 import edu.illinois.jacontebe.framework.Reporter;
 
@@ -48,7 +50,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * </ul>
  * @collector Ziyi Lin
  */
-
+@ThreadSafe
 public class Test7045594 extends RacingThreadsTest {
     private final static int N_LOOPS = 5; // # of race loops
     private final static int N_SECS = 5; // # of secs to run test

@@ -32,6 +32,9 @@ import java.rmi.RemoteException;
 import java.rmi.activation.Activatable;
 import java.rmi.activation.ActivationID;
 
+import javax.annotation.concurrent.ThreadSafe;
+
+@ThreadSafe
 public class ActivatableImpl extends Activatable implements MyRMI {
 
     private boolean classLoaderOk = false;

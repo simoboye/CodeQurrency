@@ -29,6 +29,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 /**
  * This is a subclass of RAMDirectory that adds methods intended to be used only
  * by unit tests.
@@ -37,6 +39,7 @@ import java.util.Set;
  */
 
 @SuppressWarnings("serial")
+@ThreadSafe
 public class MockRAMDirectory extends RAMDirectory {
     long maxSize;
 

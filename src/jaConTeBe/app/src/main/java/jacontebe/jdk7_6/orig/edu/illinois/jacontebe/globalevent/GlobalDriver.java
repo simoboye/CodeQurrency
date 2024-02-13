@@ -3,6 +3,8 @@ package edu.illinois.jacontebe.globalevent;
 import java.util.Hashtable;
 import java.util.Map;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 /**
  * This class enforces a multi-threaded program to execute with a global
  * sequence.
@@ -10,6 +12,7 @@ import java.util.Map;
  * @author Ziyi Lin
  * 
  */
+@ThreadSafe
 public class GlobalDriver {
 
     private static final GlobalDriver INSTANCE = new GlobalDriver();

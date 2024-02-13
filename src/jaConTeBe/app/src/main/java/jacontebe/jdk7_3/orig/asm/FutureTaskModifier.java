@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import edu.illinois.jacontebe.OptionHelper;
 import edu.illinois.jacontebe.asm.Constants;
 import edu.illinois.jacontebe.asm.ModifyDriver;
@@ -14,6 +16,7 @@ import edu.illinois.jacontebe.asm.ModifyDriver;
  * @author Ziyi Lin
  *
  */
+@ThreadSafe
 public class FutureTaskModifier {
 
     public static void main(String[] args) throws IOException {

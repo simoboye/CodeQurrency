@@ -1,5 +1,7 @@
 package asm;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
@@ -13,6 +15,7 @@ import edu.illinois.jacontebe.asm.CodeTemplate;
  * @author Ziyi Lin
  *
  */
+@ThreadSafe
 public class AddGS2RMIConstructorVisitor extends MethodVisitor implements
         Opcodes {
 

@@ -1,3 +1,5 @@
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.apache.log4j.spi.ThrowableInformation;
 
 import edu.illinois.jacontebe.OptionHelper;
@@ -14,6 +16,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * 
  * @author Ziyi Lin
  */
+@ThreadSafe
 public class Test44032 {
 
     private static final int DEFAULT_LOOPS = 30;

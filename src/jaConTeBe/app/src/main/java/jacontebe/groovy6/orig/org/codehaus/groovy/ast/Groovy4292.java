@@ -3,6 +3,8 @@ package org.codehaus.groovy.ast;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import edu.illinois.jacontebe.Helpers;
 import edu.illinois.jacontebe.OptionHelper;
 import edu.illinois.jacontebe.asm.ClassGenerator;
@@ -24,6 +26,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * @author Ziyi Lin
  * 
  */
+@ThreadSafe
 public class Groovy4292 {
 
     private static final int DEFAULT_LOOPS = 5;

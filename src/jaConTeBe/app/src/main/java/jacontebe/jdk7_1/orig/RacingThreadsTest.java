@@ -25,6 +25,8 @@ import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 /**
  * RacingThreadsTest is a support class for creating a test where multiple
  * threads are needed to exercise a code path. The RacingThreadsTest class is
@@ -130,6 +132,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * message is printed. Otherwise, the failure count is printed, a "Test FAILed"
  * message is printed and a RuntimeException is thrown.
  */
+@ThreadSafe
 public class RacingThreadsTest {
     /**
      * name of the test

@@ -1,5 +1,7 @@
 import java.util.Hashtable;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import edu.illinois.jacontebe.Helpers;
 import edu.illinois.jacontebe.OptionHelper;
 import edu.illinois.jacontebe.framework.Reporter;
@@ -16,6 +18,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * @collector Ziyi Lin
  * 
  */
+@ThreadSafe
 public class Test6582568 {
     public static void main(String[] args) {
         Reporter.reportStart("jdk6582568", 0, "deadlock");

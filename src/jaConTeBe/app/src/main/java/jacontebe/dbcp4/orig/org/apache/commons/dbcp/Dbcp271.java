@@ -2,6 +2,8 @@ package org.apache.commons.dbcp;
 
 import java.util.concurrent.CountDownLatch;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import edu.illinois.jacontebe.Helpers;
 import edu.illinois.jacontebe.framework.Reporter;
 
@@ -18,6 +20,7 @@ import edu.illinois.jacontebe.framework.Reporter;
  * @author Ziyi Lin
  * 
  */
+@ThreadSafe
 public class Dbcp271 {
 
     @SuppressWarnings("deprecation")

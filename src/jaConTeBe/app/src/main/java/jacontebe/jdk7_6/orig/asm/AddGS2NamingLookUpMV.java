@@ -1,10 +1,13 @@
 package asm;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 import edu.illinois.jacontebe.asm.CodeTemplate;
 
+@ThreadSafe
 public class AddGS2NamingLookUpMV extends MethodVisitor implements Opcodes {
 
     private CodeTemplate codeTemplate;
