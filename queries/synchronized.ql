@@ -95,4 +95,4 @@ where
   and not m.isPrivate() // Should we have this as a recursive problem or just report the private method?
   and hasNoSynchronizedThis(m, fa)
   and checkLocks(fa)
-select m, c, "Writes to a field. Consider it being in a synchronized block."
+select m, "Writes to a field. Consider it being in a synchronized block."
