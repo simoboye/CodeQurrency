@@ -50,15 +50,19 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.jfree.data.Series;
 import org.jfree.data.SeriesException;
 import org.jfree.data.XYDataPair;
+import org.jfree.util.ObjectUtils;
 
 /**
  * Represents a sequence of zero or more data pairs in the form (x, y).
  *
  * @author David Gilbert
  */
+@ThreadSafe
 public class XYSeries extends Series implements Serializable {
 
     /** The list of data pairs in the series. */

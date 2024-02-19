@@ -54,6 +54,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.jfree.data.Series;
 import org.jfree.data.SeriesException;
 import org.jfree.data.time.*;
@@ -63,6 +65,7 @@ import org.jfree.data.time.*;
  *
  * @author David Gilbert
  */
+@ThreadSafe
 public class TimeSeries extends Series implements Serializable {
 
     /** Default value for the domain description. */
