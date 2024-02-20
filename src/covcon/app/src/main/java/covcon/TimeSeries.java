@@ -78,7 +78,7 @@ public class TimeSeries extends Series implements Serializable {
     private String domain;
 
     /** A description of the range. */
-    private String range;
+    public String range;
 
     /** The type of period for the data. */
     private Class timePeriodClass;
