@@ -20,8 +20,8 @@ public class Test {
    * Calls the a method where y field escapes.
    * @param y
    */
-  public void setYAgainInCorrect(int y) {
-    setYPrivate(y);
+  public void setYAgainInCorrect(int t) {
+    setYPrivate(t);
   }
 
   /**

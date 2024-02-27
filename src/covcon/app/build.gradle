@@ -9,12 +9,15 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
-    id "com.github.spotbugs" version "6.0.7"
 }
 
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
+
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
@@ -23,9 +26,11 @@ dependencies {
 
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:31.0.1-jre'
+
+    implementation fileTree(dir: 'libs', include: '*.jar')
 }
 
 application {
     // Define the main class for the application.
-    mainClass = 'examples.App'
+    mainClass = 'covcon.App'
 }
