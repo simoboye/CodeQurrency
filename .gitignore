@@ -24,3 +24,5 @@ databases*
 hs_err_pid*
 replay_pid*
 CodeQurrency.code-workspace
+
+src/jaConTeBe/app/bin/*
