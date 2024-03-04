@@ -56,17 +56,20 @@ predicate hasLockButNoUnlock(FieldAccess fa){
   )
 }
 
+predicate checkIfPreOrSuccessorHasLock(FieldAccess fa){
+  not fa.getType().toString() = "Lock"
+  and (
+  not fa.getControlFlowNode().getAPredecessor*().toString() = "lock(...)"
+  or not fa.getControlFlowNode().getASuccessor*().toString() = "unlock(...)")
+}
+
 predicate checkLocks(FieldAccess fa) {
   // Assumptions: One should always lock and unlock in the same callable.
 
   // We do not find these: fieldUpdateOutsideOfLock: this is due to the location... // Bjørnar
   // and "notTheSameLockAsAdd" this due to related fields in different method with different locks // Simon
 
-  hasNoLocks(fa)
-    or
-  hasLockButNoUnlock(fa)
-    or
-  hasUnlockButNoLock(fa)
+  checkIfPreOrSuccessorHasLock(fa)
     or
   checkIfAllFieldsAreInLock(fa)
 }
@@ -95,4 +98,4 @@ where
   and not m.isPrivate() // Should we have this as a recursive problem or just report the private method?
   and hasNoSynchronizedThis(m, fa)
   and checkLocks(fa)
-select m, "Writes to a field. Consider it being in a synchronized block."
+select m, fa, fa.getControlFlowNode().getAPredecessor*(), fa.getType(), "Writes to a field. Consider it being in a synchronized block."
