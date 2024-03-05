@@ -28,66 +28,18 @@ predicate hasNoSynchronizedThis(Callable ca, FieldAccess fa) {
   )
 }
 
-predicate hasNoLocks(FieldAccess fa) {
-  not exists(
-    MethodAccess ma | 
-    ma.getMethod().hasName("lock") and ma.getEnclosingCallable() = fa.getEnclosingCallable() or
-    ma.getMethod().hasName("unlock") and ma.getEnclosingCallable() = fa.getEnclosingCallable()
-  )
-}
-
-predicate hasUnlockButNoLock(FieldAccess fa){
-  exists(
-    MethodAccess ma | 
-    ma.getMethod().hasName("unlock") and ma.getEnclosingCallable() = fa.getEnclosingCallable() |
-    not exists( MethodAccess ma2 | 
-            ma2.getMethod().hasName("lock") and ma2.getEnclosingCallable() = fa.getEnclosingCallable() and
-            ma.getQualifier().toString() = ma2.getQualifier().toString())
-  )
-}
-
-predicate hasLockButNoUnlock(FieldAccess fa){
-  exists(
-    MethodAccess ma | 
-    ma.getMethod().hasName("lock") and ma.getEnclosingCallable() = fa.getEnclosingCallable() |
-    not exists(MethodAccess ma2 | 
-            ma2.getMethod().hasName("unlock") and ma2.getEnclosingCallable() = fa.getEnclosingCallable() and
-            ma.getQualifier().toString() = ma2.getQualifier().toString())
-  )
+predicate checkLocks(ControlFlowNode cLock, ControlFlowNode cUnlock) {
+  if cLock.toString() = "lock(...)"
+  then
+    if cUnlock.toString() = "unlock(...)"
+    then cLock.getAPredecessor().toString() = cUnlock.getAPredecessor().toString()
+    else checkLocks(cLock, cUnlock.getASuccessor())
+  else checkLocks(cLock.getAPredecessor(), cUnlock)
 }
 
 predicate checkIfPreOrSuccessorHasLock(FieldAccess fa){
   not fa.getType().toString() = "Lock"
-  and (
-  not fa.getControlFlowNode().getAPredecessor*().toString() = "lock(...)"
-  or not fa.getControlFlowNode().getASuccessor*().toString() = "unlock(...)")
-}
-
-predicate checkLocks(FieldAccess fa) {
-  // Assumptions: One should always lock and unlock in the same callable.
-
-  // We do not find these: fieldUpdateOutsideOfLock: this is due to the location... // Bjørnar
-  // and "notTheSameLockAsAdd" this due to related fields in different method with different locks // Simon
-
-  checkIfPreOrSuccessorHasLock(fa)
-    or
-  checkIfAllFieldsAreInLock(fa)
-}
-
-predicate checkIfAllFieldsAreInLock(FieldAccess fa){
-  exists(
-    MethodAccess ma | 
-    ma.getMethod().hasName("lock") and ma.getEnclosingCallable() = fa.getEnclosingCallable() |
-    ma.getLocation().getStartLine() > fa.getLocation().getStartLine()
-    // and (ma.getLocation().getStartColumn() > fa.getLocation().getStartColumn())
-  )
-  or 
-  exists(
-    MethodAccess ma | 
-    ma.getMethod().hasName("unlock") and ma.getEnclosingCallable() = fa.getEnclosingCallable() |
-    ma.getLocation().getEndLine() < fa.getLocation().getStartLine()
-    // and (ma.getLocation().getEndColumn() < fa.getLocation().getStartColumn())
-  )
+  and not checkLocks(fa.getControlFlowNode(), fa.getControlFlowNode())
 }
 
 from Class c, Method m, FieldAccess fa
@@ -97,5 +49,5 @@ where
   and fa.getEnclosingCallable() = m
   and not m.isPrivate() // Should we have this as a recursive problem or just report the private method?
   and hasNoSynchronizedThis(m, fa)
-  and checkLocks(fa)
+  and checkIfPreOrSuccessorHasLock(fa)
 select m, "Writes to a field. Consider it being in a synchronized block."
