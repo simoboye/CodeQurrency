@@ -30,4 +30,12 @@ public class C {
         this.y = this.y - 1;
         lock.unlock();
     }
+
+    public void n3() {
+        lock.lock();
+        y = 0;
+        y += 1;
+        y = y - 1;
+        lock.unlock(); 
+    }
 }
