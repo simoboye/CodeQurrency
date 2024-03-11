@@ -28,18 +28,41 @@ import semmle.code.java.Concurrency
 //   )
 // }
 
-predicate checkLocks(ControlFlowNode cLock, ControlFlowNode cUnlock) {
+predicate checkLocks2(ControlFlowNode cLock, ControlFlowNode cUnlock, ControlFlowNode currentLock) {
+  if cLock.toString() = "lock(...)" 
+  then
+    if cUnlock.toString() = "unlock(...)"
+    then cLock.getAPredecessor().toString() = currentLock.getAPredecessor().toString() 
+      and cUnlock.getAPredecessor().toString() = currentLock.getAPredecessor().toString() 
+    else checkLocks2(cLock, cUnlock.getASuccessor(), currentLock)
+  else checkLocks2(cLock.getAPredecessor(), cUnlock, currentLock)
+}
+
+predicate checkLocks(ControlFlowNode cLock, ControlFlowNode cUnlock, Expr e) {
   if cLock.toString() = "lock(...)"
   then
     if cUnlock.toString() = "unlock(...)"
-    then cLock.getAPredecessor().toString() = cUnlock.getAPredecessor().toString()
-    else checkLocks(cLock, cUnlock.getASuccessor())
-  else checkLocks(cLock.getAPredecessor(), cUnlock)
+    then cLock.getAPredecessor().toString() = cUnlock.getAPredecessor().toString() 
+      and 
+      if (e instanceof VariableUpdate)
+      then 
+        exists(
+          Field e1 | 
+          e.(VariableUpdate).getDestVar() = e1. | 
+          checkLocks2(
+            e.getControlFlowNode(), 
+            e.getControlFlowNode(), 
+            cUnlock.getAPredecessor()
+          )
+        )
+      else e = e 
+    else checkLocks(cLock, cUnlock.getASuccessor(), e)
+  else checkLocks(cLock.getAPredecessor(), cUnlock, e)
 }
 
 predicate checkIfPreOrSuccessorHasLock(Expr e){
   // not (e.toString() = "lock(...)" or e.toString() = "unlock(...)")
-  not checkLocks(e.getControlFlowNode(), e.getControlFlowNode())
+  not checkLocks(e.getControlFlowNode(), e.getControlFlowNode(), e)
 }
 
 from Class c, Method m, Expr e
@@ -52,4 +75,4 @@ where
   and not m.isPrivate() // Should we have this as a recursive problem or just report the private method?
   // and hasNoSynchronizedThis(m, fa)
   and checkIfPreOrSuccessorHasLock(e)
-select m, "Writes to a field. Consider it being in a synchronized block."
+select e, "Writes to a field. Consider it being in a synchronized block."
