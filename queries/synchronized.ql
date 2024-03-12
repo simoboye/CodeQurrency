@@ -28,6 +28,48 @@ import semmle.code.java.Concurrency
 //   )
 // }
 
+predicate checkFieldOccurences(Expr e, ControlFlowNode lock) {
+  exists(
+    Field f | 
+    e.(VariableUpdate).getDestVar() = f | 
+    checkLocks2(
+      e.getControlFlowNode(), 
+      e.getControlFlowNode(), 
+      lock
+    )
+  )
+  or
+  exists(
+    Field f | 
+    e.(FieldRead).getField() = f |
+    checkLocks2(
+      e.getControlFlowNode(), 
+      e.getControlFlowNode(), 
+      lock
+    )
+  )
+  // or
+  // exists(
+  //   Field f | 
+  //   e.(MethodAccess).getQualifier() = f.getAnAccess() |
+  //   checkLocks2(
+  //     e.getControlFlowNode(), 
+  //     e.getControlFlowNode(), 
+  //     lock
+  //   )
+  // )
+  or
+  exists(
+    Field f | 
+    e.(ArrayAccess).getArray() = f.getAnAccess() |
+    checkLocks2(
+      e.getControlFlowNode(), 
+      e.getControlFlowNode(), 
+      lock
+    )
+  )
+}
+
 predicate checkLocks2(ControlFlowNode cLock, ControlFlowNode cUnlock, ControlFlowNode currentLock) {
   if cLock.toString() = "lock(...)" 
   then
@@ -43,36 +85,21 @@ predicate checkLocks(ControlFlowNode cLock, ControlFlowNode cUnlock, Expr e) {
   then
     if cUnlock.toString() = "unlock(...)"
     then cLock.getAPredecessor().toString() = cUnlock.getAPredecessor().toString() 
-      and 
-      if (e instanceof VariableUpdate)
-      then 
-        exists(
-          Field e1 | 
-          e.(VariableUpdate).getDestVar() = e1. | 
-          checkLocks2(
-            e.getControlFlowNode(), 
-            e.getControlFlowNode(), 
-            cUnlock.getAPredecessor()
-          )
-        )
-      else e = e 
+      and checkFieldOccurences(e, cUnlock.getAPredecessor())
     else checkLocks(cLock, cUnlock.getASuccessor(), e)
   else checkLocks(cLock.getAPredecessor(), cUnlock, e)
-}
-
-predicate checkIfPreOrSuccessorHasLock(Expr e){
-  // not (e.toString() = "lock(...)" or e.toString() = "unlock(...)")
-  not checkLocks(e.getControlFlowNode(), e.getControlFlowNode(), e)
 }
 
 from Class c, Method m, Expr e
 where 
   isElementInThreadSafeAnnotatedClass(c, m)
-  and (e instanceof VariableUpdate or e instanceof Assignment or e instanceof MethodAccess)
-  and not e.(MethodAccess).getQualifier().getType().toString() = "Lock"
+  and (e instanceof VariableUpdate or e instanceof FieldRead or e instanceof ArrayAccess /*or e instanceof MethodAccess*/)
+  // Currently we need to resursively handle methodaccesses and look at those for potentially changed fields.
+  and not e.(FieldRead).getField().getType().toString() = "Lock"
   and not m.hasName("<obinit>")
   and e.getEnclosingCallable() = m
   and not m.isPrivate() // Should we have this as a recursive problem or just report the private method?
-  // and hasNoSynchronizedThis(m, fa)
-  and checkIfPreOrSuccessorHasLock(e)
-select e, "Writes to a field. Consider it being in a synchronized block."
+  // and hasNoSynchronizedThis(m, e) // Rewrite this to look at controlflownodes
+  and not checkLocks(e.getControlFlowNode(), e.getControlFlowNode(), e)
+select m, "Writes to a field. Consider it being in a synchronized block."
+
