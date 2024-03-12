@@ -1,24 +1,41 @@
-import java
-import semmle.code.java.Concurrency
-import annotation
+/**
+ * @kind graph
+ * @id shared/test
+ */
 
-// from FieldAccess fw
-// where fw.getControlFlowNode().toString() = "lock"
-// select fw.getControlFlowNode(), fw.getControlFlowNode().getAPredecessor()
+ import java
+ import semmle.code.java.Concurrency
+ import annotation
 
-// from AssignExpr t, InstanceAccess ia, FieldAccess fa
-// where t.getControlFlowNode().getAPredecessor*().toString() = "lock(...)"
-// select t.getControlFlowNode(), t.getAChildExpr()
-
-// from VariableUpdate vu
-// select vu
-
-from Expr e
-where 
-  (e instanceof VariableUpdate or e instanceof Assignment or e instanceof MethodAccess)
-  and 
-  not e.getControlFlowNode().getAPredecessor*().toString() = "lock(...)"
-  // e.(AssignExpr).getControlFlowNode().getAPredecessor*().toString() = "lock(...)" 
-  // or e.(FieldAccess).getControlFlowNode().getAPredecessor*().toString() = "lock(...)"
-select e
-
+ query predicate edges(Expr parent, Expr child, string label1, string label2) {
+      parent = child.getControlFlowNode().getAPredecessor()
+      and parent.getLocation().getFile().getBaseName() = "LockExample.java"
+      and label2 = child.getControlFlowNode() + ":" + child.getControlFlowNode().getLocation().getStartLine()
+      and (
+        label1 = parent.getControlFlowNode() + ":" + parent.getControlFlowNode().getLocation().getStartLine()
+        or
+        exists(
+          Field f | 
+          child.(VariableUpdate).getDestVar() = f
+          and label1 = f + ":" + f.getLocation().getStartLine()
+        )
+        or
+        exists(
+          Field f | 
+          child.(FieldRead).getField() = f
+          and label1 = f + ":" + f.getLocation().getStartLine()
+        )
+        or
+        exists(
+          Field f | 
+          child.(MethodAccess).getQualifier() = f.getAnAccess() 
+          and label1 = f + ":" + f.getLocation().getStartLine()
+        )
+        or
+        exists(
+          Field f | 
+          child.(ArrayAccess).getArray() = f.getAnAccess() 
+          and label1 = f + ":" + f.getLocation().getStartLine()
+        )
+      )
+  }
