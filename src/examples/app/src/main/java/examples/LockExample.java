@@ -130,4 +130,20 @@ public class LockExample {
     }
   }
 
+  public void synchronizedNonRelatedOutside3() {
+    synchronized(this) {
+      length++;
+    }
+
+    notRelatedToOther = 1;
+  }
+
+  public void synchronizedNonRelatedOutside4() {
+    synchronized(lock1) {
+      length++;
+    }
+
+    notRelatedToOther = 1;
+  }
+
 }
