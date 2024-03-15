@@ -16,8 +16,22 @@ public class C {
         this.y = this.y - 1;
     }
 
+    public void n4() {
+        this.y = 0;
+        this.y += 1;
+        this.y = this.y - 1;
+    }
+
     public void setY(int y) {
         this.y = y;
+    }
+
+    public void test() {
+        if (y == 0) {
+            lock.lock();
+        }
+        y = 0;
+        lock.unlock();
     }
 
     public void n() {

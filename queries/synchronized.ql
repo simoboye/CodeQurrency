@@ -28,11 +28,21 @@ import semmle.code.java.Concurrency
 //   )
 // }
 
-predicate checkFieldOccurences(Expr e, ControlFlowNode lock) {
+predicate compareExpectedLockToActualLock(ControlFlowNode cLock, ControlFlowNode cUnlock, ControlFlowNode currentLock) {
+  if cLock.toString() = "lock(...)" 
+  then
+    if cUnlock.toString() = "unlock(...)"
+    then cLock.getAPredecessor().toString() = currentLock.getAPredecessor().toString() 
+      and cUnlock.getAPredecessor().toString() = currentLock.getAPredecessor().toString() 
+    else compareExpectedLockToActualLock(cLock, cUnlock.getASuccessor(), currentLock)
+  else compareExpectedLockToActualLock(cLock.getAPredecessor(), cUnlock, currentLock)
+}
+
+predicate isFieldOccurencesAllOnSameLock(Expr e, ControlFlowNode lock) {
   exists(
     Field f | 
     e.(VariableUpdate).getDestVar() = f | 
-    checkLocks2(
+    compareExpectedLockToActualLock(
       e.getControlFlowNode(), 
       e.getControlFlowNode(), 
       lock
@@ -42,7 +52,7 @@ predicate checkFieldOccurences(Expr e, ControlFlowNode lock) {
   exists(
     Field f | 
     e.(FieldRead).getField() = f |
-    checkLocks2(
+    compareExpectedLockToActualLock(
       e.getControlFlowNode(), 
       e.getControlFlowNode(), 
       lock
@@ -62,7 +72,7 @@ predicate checkFieldOccurences(Expr e, ControlFlowNode lock) {
   exists(
     Field f | 
     e.(ArrayAccess).getArray() = f.getAnAccess() |
-    checkLocks2(
+    compareExpectedLockToActualLock(
       e.getControlFlowNode(), 
       e.getControlFlowNode(), 
       lock
@@ -70,24 +80,66 @@ predicate checkFieldOccurences(Expr e, ControlFlowNode lock) {
   )
 }
 
-predicate checkLocks2(ControlFlowNode cLock, ControlFlowNode cUnlock, ControlFlowNode currentLock) {
-  if cLock.toString() = "lock(...)" 
-  then
-    if cUnlock.toString() = "unlock(...)"
-    then cLock.getAPredecessor().toString() = currentLock.getAPredecessor().toString() 
-      and cUnlock.getAPredecessor().toString() = currentLock.getAPredecessor().toString() 
-    else checkLocks2(cLock, cUnlock.getASuccessor(), currentLock)
-  else checkLocks2(cLock.getAPredecessor(), cUnlock, currentLock)
-}
-
-predicate checkLocks(ControlFlowNode cLock, ControlFlowNode cUnlock, Expr e) {
+predicate isSameLockAndAllFieldOccurences(ControlFlowNode cLock, ControlFlowNode cUnlock, Expr e) {
   if cLock.toString() = "lock(...)"
   then
     if cUnlock.toString() = "unlock(...)"
     then cLock.getAPredecessor().toString() = cUnlock.getAPredecessor().toString() 
-      and checkFieldOccurences(e, cUnlock.getAPredecessor())
-    else checkLocks(cLock, cUnlock.getASuccessor(), e)
-  else checkLocks(cLock.getAPredecessor(), cUnlock, e)
+      and isFieldOccurencesAllOnSameLock(e, cUnlock.getAPredecessor())
+    else isSameLockAndAllFieldOccurences(cLock, cUnlock.getASuccessor(), e)
+  else isSameLockAndAllFieldOccurences(cLock.getAPredecessor(), cUnlock, e)
+}
+
+
+
+
+
+predicate compareExpectedLockToActualLockSync(Stmt syncLock, ControlFlowNode currentLock) {
+  syncLock.getAQlClass() = "SynchronizedStmt" and not currentLock.toString() = syncLock.getControlFlowNode().getAPredecessor().toString()
+  or compareExpectedLockToActualLockSync(syncLock.getEnclosingStmt(), currentLock)
+}
+
+predicate isFieldOccurencesAllOnSameLockSync(Expr e, ControlFlowNode lock) {
+  exists(
+    Field f | 
+    e.(VariableUpdate).getDestVar() = f | 
+    compareExpectedLockToActualLockSync(
+      e.getEnclosingStmt(),
+      lock
+    )
+  )
+  or
+  exists(
+    Field f | 
+    e.(FieldRead).getField() = f |
+    compareExpectedLockToActualLockSync(
+      e.getEnclosingStmt(),
+      lock
+    )
+  )
+  // or
+  // exists(
+  //   Field f | 
+  //   e.(MethodAccess).getQualifier() = f.getAnAccess() |
+  //   compareExpectedLockToActualLockSync(
+  //     e.getEnclosingStmt(),
+  //     lock
+  //   )
+  // )
+  or
+  exists(
+    Field f | 
+    e.(ArrayAccess).getArray() = f.getAnAccess() |
+    compareExpectedLockToActualLockSync(
+      e.getEnclosingStmt(),
+      lock
+    )
+  )
+}
+
+
+predicate hasSynchronizedBlock(Expr e, Stmt s) {
+  (s.getAQlClass() = "SynchronizedStmt" and isFieldOccurencesAllOnSameLockSync(e, s.getControlFlowNode().getAPredecessor())) or hasSynchronizedBlock(e, s.getEnclosingStmt())
 }
 
 from Class c, Method m, Expr e
@@ -100,6 +152,9 @@ where
   and e.getEnclosingCallable() = m
   and not m.isPrivate() // Should we have this as a recursive problem or just report the private method?
   // and hasNoSynchronizedThis(m, e) // Rewrite this to look at controlflownodes
-  and not checkLocks(e.getControlFlowNode(), e.getControlFlowNode(), e)
-select m, "Writes to a field. Consider it being in a synchronized block."
+  and not isSameLockAndAllFieldOccurences(e.getControlFlowNode(), e.getControlFlowNode(), e)
+  and not hasSynchronizedBlock(e, e.getEnclosingStmt())
+  and e.getLocation().getFile().getBaseName() = "LockExample.java"
+  // and not m.isSynchronized()
+select e, "Writes to a field. Consider it being in a synchronized block."
 
