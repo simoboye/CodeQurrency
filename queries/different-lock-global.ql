@@ -9,29 +9,14 @@ import java
 import annotation
 import semmle.code.java.Concurrency
 
-predicate compareExpectedLockToActualLock(ControlFlowNode cLock, ControlFlowNode cUnlock, ControlFlowNode currentLock) {
-  if cLock.toString() = "lock(...)" 
-  then
-    if cUnlock.toString() = "unlock(...)"
-    then 
-      cLock.getAPredecessor().toString() = currentLock.toString()
-      and cUnlock.getAPredecessor().toString() = currentLock.toString() 
-    else compareExpectedLockToActualLock(cLock, cUnlock.getASuccessor(), currentLock)
-  else compareExpectedLockToActualLock(cLock.getAPredecessor(), cUnlock, currentLock)
-}
-
-predicate isFieldOccurencesAllOnSameLock(Field f, ControlFlowNode lock, Expr lastExpression, Class c) {
-
+cached predicate isFieldOccurencesAllOnSameLock(Field f, ControlFlowNode lock, Expr lastExpression, Class c) {
   exists(
     Expr e | 
     not e = lastExpression and 
     isElementInThreadSafeAnnotatedClass(c, e.getEnclosingCallable()) and 
     e.(VariableUpdate).getDestVar() = f | 
-    compareExpectedLockToActualLock(
-      e.getControlFlowNode(), 
-      e.getControlFlowNode(), 
-      lock
-    )
+    e.getControlFlowNode().getASuccessor+().toString() = lock.toString() 
+    and e.getControlFlowNode().getAPredecessor+().toString() = lock.toString()
   )
 }
 
@@ -39,9 +24,12 @@ predicate isSameLockAndAllFieldOccurences(ControlFlowNode cLock, ControlFlowNode
   if cLock.toString() = "lock(...)"
   then
     if cUnlock.toString() = "unlock(...)"
-    then 
-    cLock.getAPredecessor().toString() = cUnlock.getAPredecessor().toString() and
-    isFieldOccurencesAllOnSameLock(f, cUnlock.getAPredecessor(), e, c)
+    then
+      if cLock.getAPredecessor().toString() = cUnlock.getAPredecessor().toString() and isFieldOccurencesAllOnSameLock(f, cUnlock.getAPredecessor(), e, c)
+      then
+        cLock.getAPredecessor().toString() = cUnlock.getAPredecessor().toString() and 
+        isFieldOccurencesAllOnSameLock(f, cUnlock.getAPredecessor(), e, c)
+      else cLock.getAPredecessor().toString() = cUnlock.getAPredecessor().toString()
     else isSameLockAndAllFieldOccurences(cLock, cUnlock.getASuccessor(), f, e, c)
   else isSameLockAndAllFieldOccurences(cLock.getAPredecessor(), cUnlock, f, e, c)
 }
