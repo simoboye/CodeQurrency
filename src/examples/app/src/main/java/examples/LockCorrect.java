@@ -43,7 +43,7 @@ public class LockCorrect {
   }
 
   public void x1() {
-    synchronized(this) {7
+    synchronized(this) {
       thisSynchronized++;
     }
   }
