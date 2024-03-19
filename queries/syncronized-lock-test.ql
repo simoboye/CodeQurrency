@@ -49,9 +49,15 @@
 //   e.getControlFlowNode().getBasicBlock()
 // }
 
-predicate test2(Stmt e) {
-  e.getAQlClass() = "SynchronizedStmt" or test2(e.getEnclosingStmt())
+predicate c(Expr e, string label) {
+  e.getEnclosingCallable().isSynchronized() and
+  label = e.getEnclosingCallable().toString()
 }
+
+
+// predicate test2(Stmt e) {
+//   e.getAQlClass() = "SynchronizedStmt" and test2(e.getEnclosingStmt())
+// }
 
 string test(Stmt e) {
     if e.getEnclosingStmt().getAQlClass() = "SynchronizedStmt"
@@ -59,7 +65,10 @@ string test(Stmt e) {
     else result = test(e.getEnclosingStmt()) 
 }
 
-from Expr e
-where e.getLocation().getFile().getBaseName() = "LockExample.java"
-and not test2(e.getEnclosingStmt())
-select e//, test(e.getEnclosingStmt())
+// from Expr e
+// where e.getLocation().getFile().getBaseName() = "LockExample.java"
+// and not test2(e.getEnclosingStmt())
+// select e//, test(e.getEnclosingStmt())
+
+from SynchronizedStmt s
+select s.getControlFlowNode().getAPredecessor()

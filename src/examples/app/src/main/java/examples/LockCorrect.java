@@ -10,6 +10,7 @@ public class LockCorrect {
   private int length = 0;
   private int notRelatedToOther = 10;
   private int[] content  = new int[10];
+  private int thisSynchronized = 0;
 
   public void add(int value) {
     lock1.lock();
@@ -34,6 +35,16 @@ public class LockCorrect {
   public void synchronizedOnLock12() {
     synchronized(lock1) {
       notRelatedToOther++;
+    }
+  }
+
+  public synchronized void x() {
+    thisSynchronized++;
+  }
+
+  public void x1() {
+    synchronized(this) {7
+      thisSynchronized++;
     }
   }
 
