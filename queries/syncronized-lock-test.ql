@@ -40,7 +40,26 @@
 //       )
 //   }
 
-query predicate sync(Expr e, string label1) {
-  label1 = e.getControlFlowNode().getAPredecessor*().toString()
-  and label1.matches("synchronized (...)") and e.getLocation().getFile().getBaseName() = "LockExample.java"
+// query predicate sync(Expr e, string label1) {
+//   label1 = e.getControlFlowNode().getAPredecessor*().toString()
+//   and label1.matches("synchronized (...)") and e.getLocation().getFile().getBaseName() = "LockExample.java"
+// }
+
+// predicate test(Expr e) {
+//   e.getControlFlowNode().getBasicBlock()
+// }
+
+predicate test2(Stmt e) {
+  e.getAQlClass() = "SynchronizedStmt" or test2(e.getEnclosingStmt())
 }
+
+string test(Stmt e) {
+    if e.getEnclosingStmt().getAQlClass() = "SynchronizedStmt"
+    then result = e.getEnclosingStmt().(SynchronizedStmt).getExpr().toString()
+    else result = test(e.getEnclosingStmt()) 
+}
+
+from Expr e
+where e.getLocation().getFile().getBaseName() = "LockExample.java"
+and not test2(e.getEnclosingStmt())
+select e//, test(e.getEnclosingStmt())
