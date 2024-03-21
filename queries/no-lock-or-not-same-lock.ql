@@ -7,6 +7,7 @@
 
 import java
 import annotation
+import immutable
 
 predicate isSameLockAndAllFieldOccurences(ControlFlowNode cLock, ControlFlowNode cUnlock) {
   if cLock.toString() = "lock(...)"
@@ -15,12 +16,6 @@ predicate isSameLockAndAllFieldOccurences(ControlFlowNode cLock, ControlFlowNode
     then cLock.getAPredecessor().toString() = cUnlock.getAPredecessor().toString() 
     else isSameLockAndAllFieldOccurences(cLock, cUnlock.getASuccessor())
   else isSameLockAndAllFieldOccurences(cLock.getAPredecessor(), cUnlock)
-}
-
-predicate isImmutableField(Field f, Class c) {
-  count(FieldWrite fw | fw.getField() = f | fw) -
-  (count(FieldWrite fw | fw.getField() = f and fw.getEnclosingCallable().hasName(c.getName()) | fw) + 
-  count(FieldWrite fw | fw.getField() = f and fw.getEnclosingCallable().hasName("<obinit>") | fw)) = 0
 }
 
 predicate hasSynchronizedBlock(Stmt s) {

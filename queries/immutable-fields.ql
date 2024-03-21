@@ -8,6 +8,7 @@
 
 import java
 import annotation
+import immutable
 import semmle.code.java.Concurrency
 
 // TODO: Check this case
@@ -22,12 +23,6 @@ import semmle.code.java.Concurrency
 // An object is considered to be completely initialized when its constructor finishes. 
 // A thread that can only see a reference to an object after that object has been completely initialized is guaranteed to see the correctly initialized values for that object's final fields.
 // So I guess that the above example should be considered safely published?
-
-predicate isImmutableField(Field f, Class c) {
-  count(FieldWrite fw | fw.getField() = f | fw) -
-  (count(FieldWrite fw | fw.getField() = f and fw.getEnclosingCallable().hasName(c.getName()) | fw) + 
-  count(FieldWrite fw | fw.getField() = f and fw.getEnclosingCallable().hasName("<obinit>") | fw)) = 0
-}
 
 from Field f, Class c
 where isElementInThreadSafeAnnotatedClass(c, f)

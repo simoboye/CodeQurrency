@@ -7,6 +7,7 @@
 
 import java
 import annotation
+import immutable
 import semmle.code.java.Concurrency
 
 predicate isFieldOccurencesAllOnSameLock(ControlFlowNode lock, Expr lastExpression) {
@@ -77,6 +78,7 @@ predicate removeLocalVariables(Expr e, Field f){
 from Class c, Method m, Expr e, Field f
 where 
   isElementInThreadSafeAnnotatedClass(c, m)
+  and not isImmutableField(f, c)
   and (e instanceof VariableUpdate or e instanceof FieldRead /*or e instanceof ArrayAccess /*or e instanceof MethodAccess*/)
   and not e.(FieldRead).getField().getType().toString() = "Lock"
   and not m.hasName("<obinit>")
