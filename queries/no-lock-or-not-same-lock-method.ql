@@ -2,12 +2,11 @@
  * @name Mutual exclusion absense
  * @kind problem
  * @problem.severity warning
- * @id java/no-lock-or-not-same-lock
+ * @id java/no-lock-or-not-same-lock-method
  */
 
 import java
 import annotation
-import immutable
 
 predicate isSameLockAndAllFieldOccurences(ControlFlowNode cLock, ControlFlowNode cUnlock) {
   if cLock.toString() = "lock(...)"
@@ -25,8 +24,6 @@ predicate hasSynchronizedBlock(Stmt s) {
 from Class c, MethodAccess m
 where 
   isElementInThreadSafeAnnotatedClass(c, m.getEnclosingCallable())
-  // and (e instanceof VariableUpdate or e instanceof FieldRead)
-  // and not e.(FieldRead).getField().getType().toString() = "Lock" // We did this because we sometimes report locks that did not have a lock above/beneath (which makes no sense)
   and not m.getMethod().toString() = "lock" 
   and not m.getMethod().toString() = "unlock"
   and not m.getMethod().toString() = "<obinit>"

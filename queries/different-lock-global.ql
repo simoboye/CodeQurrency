@@ -8,7 +8,6 @@
 import java
 import annotation
 import immutable
-import semmle.code.java.Concurrency
 
 predicate isFieldOccurencesAllOnSameLock(ControlFlowNode lock, Expr lastExpression) {
   exists(
@@ -75,15 +74,14 @@ predicate removeLocalVariables(Expr e, Field f){
   e.(FieldRead).getField() = f
 }
 
-from Class c, Method m, Expr e, Field f
+from Class c, Expr e, Field f
 where 
-  isElementInThreadSafeAnnotatedClass(c, m)
+  isElementInThreadSafeAnnotatedClass(c, e.getEnclosingCallable())
   and not isImmutableField(f, c)
-  and (e instanceof VariableUpdate or e instanceof FieldRead /*or e instanceof ArrayAccess /*or e instanceof MethodAccess*/)
+  and (e instanceof VariableUpdate or e instanceof FieldRead)
   and not e.(FieldRead).getField().getType().toString() = "Lock"
-  and not m.hasName("<obinit>")
-  and e.getEnclosingCallable() = m
-  and not m.isPrivate() // Should we have this as a recursive problem or just report the private method?
+  and not e.getEnclosingCallable().hasName("<obinit>")
+  and not e.getEnclosingCallable() instanceof Constructor
   and removeLocalVariables(e, f)
   and (
     if (

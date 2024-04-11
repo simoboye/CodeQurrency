@@ -19,17 +19,15 @@ predicate isSameLockAndAllFieldOccurences(ControlFlowNode cLock, ControlFlowNode
 }
 
 predicate hasSynchronizedBlock(Stmt s) {
-  s. getAQlClass() = "SynchronizedStmt" or hasSynchronizedBlock(s.getEnclosingStmt())
+  s.getAQlClass() = "SynchronizedStmt" or hasSynchronizedBlock(s.getEnclosingStmt())
 }
 
-from Class c, Method m, Expr e, Field f
+from Class c, Expr e, Field f
 where 
-  isElementInThreadSafeAnnotatedClass(c, m)
+  isElementInThreadSafeAnnotatedClass(c, e.getEnclosingCallable())
   and (e instanceof VariableUpdate or e instanceof FieldRead)
-  // and not e.(FieldRead).getField().getType().toString() = "Lock" // We did this because we sometimes report locks that did not have a lock above/beneath (which makes no sense)
-  and not m.hasName("<obinit>")
-  and e.getEnclosingCallable() = m
-  and not m.isPrivate()
+  and not e.getEnclosingCallable().hasName("<obinit>")
+  and not e.getEnclosingCallable() instanceof Constructor
   and (
     e.(VariableUpdate).getDestVar() = f or
     e.(FieldRead).getField() = f
@@ -37,5 +35,5 @@ where
   and not isImmutableField(f, c)
   and not isSameLockAndAllFieldOccurences(e.getControlFlowNode(), e.getControlFlowNode())
   and not hasSynchronizedBlock(e.getEnclosingStmt())
-  and not m.isSynchronized()
+  and not e.getEnclosingCallable().isSynchronized()
 select e, "Writes to a field. Consider it being in a lock and make sure that the lock and unlock is on the same object."
