@@ -14,8 +14,6 @@ predicate isFieldOccurencesAllOnSameLock(ControlFlowNode lock, Expr lastExpressi
   exists(
     MethodAccess m |  
     not m = lastExpression and lastExpression.toString() = m.toString() |
-    // and lastExpression.(VariableUpdate).getDestVar() = f
-    // and m.getDestVar() = f |
     m.getControlFlowNode().getASuccessor+().toString() = lock.toString() and
     m.getControlFlowNode().getAPredecessor+().toString() = lock.toString()
   )
@@ -27,9 +25,9 @@ predicate isSameLockAndAllFieldOccurences(ControlFlowNode cLock, Expr e) {
   else isSameLockAndAllFieldOccurences(cLock.getAPredecessor(), e)
 }
 
-SynchronizedStmt getSyncStmt(Expr e, Stmt s) {
-  (s.getAQlClass() = "SynchronizedStmt" and result = s.(SynchronizedStmt) 
-  or result = getSyncStmt(e, s.getEnclosingStmt()))
+SynchronizedStmt getSyncStmt(Stmt s) {
+  (s instanceof SynchronizedStmt and result = s.(SynchronizedStmt)
+  or result = getSyncStmt(s.getEnclosingStmt()))
 }
 predicate hasSynchronizedBlock(Expr e, Stmt s) {
   s.getAQlClass() = "SynchronizedStmt" or hasSynchronizedBlock(e, s.getEnclosingStmt())
@@ -40,22 +38,19 @@ predicate isSynchronizedOnSameObject(Expr e) {
     MethodAccess newM |  
     not e = newM and e.toString() = newM.toString() |
     if e.getEnclosingCallable().isSynchronized()
-    then "this" != getSyncStmt(newM, newM.getEnclosingStmt()).getExpr().toString()
+    then "this" != getSyncStmt(newM.getEnclosingStmt()).getExpr().toString()
     else
-      getSyncStmt(e, e.getEnclosingStmt()).getExpr().toString() !=
-      getSyncStmt(newM, newM.getEnclosingStmt()).getExpr().toString()
+      getSyncStmt(e.getEnclosingStmt()).getExpr().toString() !=
+      getSyncStmt(newM.getEnclosingStmt()).getExpr().toString()
   )
 }
 
 from Class c, MethodAccess m
 where 
   isElementInThreadSafeAnnotatedClass(c, m.getEnclosingCallable())
-  // and not isImmutableField(f, c)
-  // and (e instanceof MethodAccess)
-  // and not e.(FieldRead).getField().getType().toString() = "Lock"
   and not m.getMethod().toString() = "lock" or not m.getMethod().toString() = "unlock"
   and not m.getEnclosingCallable().hasName("<obinit>")
-  // and e.getEnclosingCallable() = m
+  and not m.getEnclosingCallable() instanceof Constructor
   and (
     if (
       hasSynchronizedBlock(m, m.getEnclosingStmt()) 

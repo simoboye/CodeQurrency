@@ -19,7 +19,12 @@ predicate isSameLockAndAllFieldOccurences(ControlFlowNode cLock, ControlFlowNode
 }
 
 predicate hasSynchronizedBlock(Stmt s) {
-  s.getAQlClass() = "SynchronizedStmt" or hasSynchronizedBlock(s.getEnclosingStmt())
+  s instanceof SynchronizedStmt or hasSynchronizedBlock(s.getEnclosingStmt())
+}
+
+predicate removeLocalVariables(Expr e, Field f){
+  e.(VariableUpdate).getDestVar() = f or
+  e.(FieldRead).getField() = f
 }
 
 from Class c, Expr e, Field f
@@ -28,10 +33,7 @@ where
   and (e instanceof VariableUpdate or e instanceof FieldRead)
   and not e.getEnclosingCallable().hasName("<obinit>")
   and not e.getEnclosingCallable() instanceof Constructor
-  and (
-    e.(VariableUpdate).getDestVar() = f or
-    e.(FieldRead).getField() = f
-  )
+  and removeLocalVariables(e, f)
   and not isImmutableField(f, c)
   and not isSameLockAndAllFieldOccurences(e.getControlFlowNode(), e.getControlFlowNode())
   and not hasSynchronizedBlock(e.getEnclosingStmt())

@@ -35,12 +35,12 @@ predicate isSameLockAndAllFieldOccurences(ControlFlowNode cLock, Expr e) {
   else isSameLockAndAllFieldOccurences(cLock.getAPredecessor(), e)
 }
 
-SynchronizedStmt getSyncStmt(Expr e, Stmt s) {
-  (s.getAQlClass() = "SynchronizedStmt" and result = s.(SynchronizedStmt) 
-  or result = getSyncStmt(e, s.getEnclosingStmt()))
+SynchronizedStmt getSyncStmt(Stmt s) {
+  (s instanceof SynchronizedStmt and result = s.(SynchronizedStmt) 
+  or result = getSyncStmt(s.getEnclosingStmt()))
 }
-predicate hasSynchronizedBlock(Expr e, Stmt s) {
-  s.getAQlClass() = "SynchronizedStmt" or hasSynchronizedBlock(e, s.getEnclosingStmt())
+predicate hasSynchronizedBlock(Stmt s) {
+  s instanceof SynchronizedStmt or hasSynchronizedBlock(s.getEnclosingStmt())
 }
 
 predicate isSynchronizedOnSameObject(Expr e) {  
@@ -50,10 +50,10 @@ predicate isSynchronizedOnSameObject(Expr e) {
     and e.(VariableUpdate).getDestVar() = f
     and newE.getDestVar() = f |
     if e.getEnclosingCallable().isSynchronized()
-    then "this" != getSyncStmt(newE, newE.getEnclosingStmt()).getExpr().toString()
+    then "this" != getSyncStmt(newE.getEnclosingStmt()).getExpr().toString()
     else
-      getSyncStmt(e, e.getEnclosingStmt()).getExpr().toString() !=
-      getSyncStmt(newE, newE.getEnclosingStmt()).getExpr().toString()
+      getSyncStmt(e.getEnclosingStmt()).getExpr().toString() !=
+      getSyncStmt(newE.getEnclosingStmt()).getExpr().toString()
   )
   or
   exists(
@@ -62,10 +62,10 @@ predicate isSynchronizedOnSameObject(Expr e) {
     and e.(FieldRead).getField() = f
     and newE.getField() = f |
     if e.getEnclosingCallable().isSynchronized()
-    then "this" != getSyncStmt(newE, newE.getEnclosingStmt()).getExpr().toString()
+    then "this" != getSyncStmt(newE.getEnclosingStmt()).getExpr().toString()
     else
-      getSyncStmt(e, e.getEnclosingStmt()).getExpr().toString() !=
-      getSyncStmt(newE, newE.getEnclosingStmt()).getExpr().toString()
+      getSyncStmt(e.getEnclosingStmt()).getExpr().toString() !=
+      getSyncStmt(newE.getEnclosingStmt()).getExpr().toString()
   )
 }
 
@@ -85,7 +85,7 @@ where
   and removeLocalVariables(e, f)
   and (
     if (
-      hasSynchronizedBlock(e, e.getEnclosingStmt()) 
+      hasSynchronizedBlock(e.getEnclosingStmt()) 
       or
       e.getEnclosingCallable().isSynchronized())
     then isSynchronizedOnSameObject(e)
