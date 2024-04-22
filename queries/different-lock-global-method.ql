@@ -7,8 +7,6 @@
 
 import java
 import annotation
-import immutable
-import semmle.code.java.Concurrency
 
 predicate isFieldOccurencesAllOnSameLock(ControlFlowNode lock, Expr lastExpression) {
   exists(
@@ -48,8 +46,9 @@ predicate isSynchronizedOnSameObject(Expr e) {
 from Class c, MethodAccess m
 where 
   isElementInThreadSafeAnnotatedClass(c, m.getEnclosingCallable())
-  and not m.getMethod().toString() = "lock" or not m.getMethod().toString() = "unlock"
-  and not m.getEnclosingCallable().hasName("<obinit>")
+  and not m.getMethod().toString() = "lock" 
+  and not m.getMethod().toString() = "unlock"
+  and not m.getEnclosingCallable().toString() = "<obinit>"
   and not m.getEnclosingCallable() instanceof Constructor
   and (
     if (
