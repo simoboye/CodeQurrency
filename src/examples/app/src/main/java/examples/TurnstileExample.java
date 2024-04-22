@@ -5,7 +5,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 @ThreadSafe
-public class TurnstyleExample {
+public class TurnstileExample {
   private Lock lock = new ReentrantLock();
   private int count = 0;
 
@@ -23,7 +23,7 @@ public class TurnstyleExample {
 }
 
 @ThreadSafe
-class FaultyTurnstyleExample {
+class FaultyTurnstileExample {
   private Lock lock = new ReentrantLock();
   private int count = 0;
 
