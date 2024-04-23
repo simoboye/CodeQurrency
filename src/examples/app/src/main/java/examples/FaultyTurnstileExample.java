@@ -4,7 +4,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 @ThreadSafe
-public class TurnstileExample {
+class FaultyTurnstileExample {
   private Lock lock = new ReentrantLock();
   private int count = 0;
 
@@ -15,8 +15,7 @@ public class TurnstileExample {
   }
 
   public void dec() {
-    lock.lock();
     count--;
-    lock.unlock();
   }
 }
+
