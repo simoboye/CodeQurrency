@@ -1,6 +1,5 @@
 package examples;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -14,13 +13,13 @@ public class SyncLstExample<T> {
     this.lst = lst;
   }
 
-  public void push(T item) {
+  public void add(T item) {
     lock.lock();
     lst.add(item);
     lock.unlock();
   }
 
-  public void pop(int i) {
+  public void remove(int i) {
     lock.lock();
     lst.remove(i);
     lock.unlock();
@@ -36,13 +35,13 @@ class FaultySyncLstExample<T> {
     this.lst = lst;
   }
 
-  public void push(T item) {
+  public void add(T item) {
     lock.lock();
     lst.add(item);
     lock.unlock();
   }
 
-  public void pop(int i) {
+  public void remove(int i) {
     lst.remove(i);
   }
 }
