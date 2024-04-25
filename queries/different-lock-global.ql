@@ -1,5 +1,5 @@
 /**
- * @name Synchronized
+ * @name Different lock global
  * @kind problem
  * @problem.severity warning
  * @id java/synchronized
