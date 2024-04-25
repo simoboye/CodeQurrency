@@ -3,7 +3,7 @@
  * @kind problem
  * @problem.severity warning
  * @id java/synchronized
- */
+ */ 
 
 import java
 import annotation
