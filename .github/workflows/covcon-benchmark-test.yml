@@ -66,6 +66,7 @@ jobs:
             - uses: ./queries/escaping.ql
             - uses: ./queries/publishment.ql
             - uses: ./queries/different-lock-global.ql
+            - uses: ./queries/different-lock-global-method.ql
             - uses: ./queries/no-lock-or-not-same-lock.ql
             - uses: ./queries/no-lock-or-not-same-lock-method.ql
 
