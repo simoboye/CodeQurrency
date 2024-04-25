@@ -1,6 +1,5 @@
 package examples;
 
-import java.util.Stack;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -19,21 +18,5 @@ public class TurnstileExample {
     lock.lock();
     count--;
     lock.unlock();
-  }
-}
-
-@ThreadSafe
-class FaultyTurnstileExample {
-  private Lock lock = new ReentrantLock();
-  private int count = 0;
-
-  public void inc() {
-    lock.lock();
-    count++;
-    lock.unlock();
-  }
-
-  public void dec() {
-    count--;
   }
 }
