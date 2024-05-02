@@ -10,7 +10,8 @@ import annotation
 import immutable
 
 predicate isFieldOccurencesAllOnSameLock(ControlFlowNode lock, Expr lastExpression) {
-  exists(
+  if lastExpression instanceof VariableUpdate 
+  then exists(
     VariableUpdate e, Field f |  
     not e = lastExpression 
     and lastExpression.(VariableUpdate).getDestVar() = f
@@ -18,8 +19,7 @@ predicate isFieldOccurencesAllOnSameLock(ControlFlowNode lock, Expr lastExpressi
     e.getControlFlowNode().getASuccessor+().toString() = lock.toString() and
     e.getControlFlowNode().getAPredecessor+().toString() = lock.toString()
   )
-  or
-  exists(
+  else exists(
     FieldRead e, Field f |  
     not e = lastExpression 
     and lastExpression.(FieldRead).getField() = f
@@ -44,7 +44,7 @@ predicate hasSynchronizedBlock(Stmt s) {
 }
 
 predicate isSynchronizedOnSameObject(Expr e) {  
-  exists(
+  if e instanceof VariableUpdate then exists(
     VariableUpdate newE, Field f |  
     not e = newE 
     and e.(VariableUpdate).getDestVar() = f
@@ -55,7 +55,7 @@ predicate isSynchronizedOnSameObject(Expr e) {
       getSyncStmt(e.getEnclosingStmt()).getExpr().toString() !=
       getSyncStmt(newE.getEnclosingStmt()).getExpr().toString()
   )
-  or
+  else
   exists(
     FieldRead newE, Field f |  
     not e = newE 
@@ -69,20 +69,23 @@ predicate isSynchronizedOnSameObject(Expr e) {
   )
 }
 
-predicate removeLocalVariables(Expr e, Field f){
-  e.(VariableUpdate).getDestVar() = f or
-  e.(FieldRead).getField() = f
+predicate removeLocalVariables(Expr e, Field f, Class c){
+  if e instanceof VariableUpdate then
+  e.(VariableUpdate).getDestVar() = f else
+    if e instanceof FieldRead then
+    e.(FieldRead).getField() = f else
+    f != f
 }
 
 from Class c, Expr e, Field f
 where 
-  isElementInThreadSafeAnnotatedClass(c, e.getEnclosingCallable())
-  and not isImmutableField(f, c)
+  isImmutableField(f, c) implies isElementInThreadSafeAnnotatedClass(c, e.getEnclosingCallable())
+  and
+  removeLocalVariables(e, f, c)
   and (e instanceof VariableUpdate or e instanceof FieldRead)
-  and not e.(FieldRead).getField().getType().toString() = "Lock"
+  and not e.(FieldRead).getField().getType().hasName("Lock")
   and not e.getEnclosingCallable().hasName("<obinit>")
   and not e.getEnclosingCallable() instanceof Constructor
-  and removeLocalVariables(e, f)
   and (
     if (
       hasSynchronizedBlock(e.getEnclosingStmt()) 
